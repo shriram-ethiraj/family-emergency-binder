@@ -1,0 +1,6 @@
+interface:
+  display_name: "FEBC Template Authoring"
+  short_description: "Create safe versioned binder templates"
+  default_prompt: "Use $febc-template-authoring to create or update this binder template."
+policy:
+  allow_implicit_invocation: true

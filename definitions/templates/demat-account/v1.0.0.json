@@ -1,0 +1,45 @@
+{
+  "templateId": "demat-account",
+  "version": "1.0.0",
+  "name": "Demat and investment account",
+  "description": "An account-level summary of demat holdings, approximate values, nomination, and recovery contacts without individual security details.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "accountHolderName": { "label": "Account holder name", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Sample Account Holder" },
+    "brokerOrDp": { "label": "Broker / depository participant (DP)", "type": "string", "required": true, "minLength": 1, "maxLength": 160, "example": "Example Securities Services" },
+    "depository": { "label": "Depository", "type": "string", "enum": ["CDSL", "NSDL", "Other / not verified"], "input": "enum", "example": "CDSL" },
+    "dematAccountId": { "label": "Demat / BO / client ID", "type": "string", "required": true, "minLength": 1, "maxLength": 80, "example": "SAMPLE-DEMAT-0001" },
+    "holdingMode": { "label": "Holding mode", "type": "string", "enum": ["Single", "Joint", "Not verified"], "input": "enum", "example": "Single" },
+
+    "stocksValue": { "label": "Approximate stock value (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 875000 },
+    "mutualFundsValue": { "label": "Approximate mutual-fund value (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 625000 },
+    "cashOrOtherValue": { "label": "Approximate cash / other value (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 25000 },
+    "valueAsOfDate": { "label": "Values as of", "type": "string", "required": true, "format": "date", "input": "date", "formatter": "date", "example": "2026-09-01" },
+
+    "registeredMobile": { "label": "Registered mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 90000 00000" },
+    "registeredEmail": { "label": "Registered email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "holder@example.invalid" },
+
+    "nomineeStatus": { "label": "Nominee status", "type": "string", "enum": ["Registered", "Not registered", "Not verified"], "input": "enum", "example": "Registered" },
+    "nomineeName": { "label": "Nominee name", "type": "string", "maxLength": 120, "example": "Sample Nominee" },
+    "nomineeRelationship": { "label": "Nominee relationship", "type": "string", "maxLength": 80, "example": "Spouse" },
+    "nomineeMobile": { "label": "Nominee mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 91111 11111" },
+
+    "dpSupportPhone": { "label": "DP support phone", "type": "string", "maxLength": 80, "input": "phone", "example": "1800 000 100" },
+    "dpSupportEmail": { "label": "DP support email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "support@example.invalid" },
+    "documentLocation": { "label": "Account documents stored at", "type": "string", "maxLength": 300, "example": "Family binder, Investments section" },
+    "importantNotes": { "label": "Important notes", "type": "string", "maxLength": 1500, "input": "multiline", "formatter": "multiline", "example": "Values are estimates. Contact the DP and quote the demat account ID for transmission assistance." }
+  },
+  "layout": [
+    { "type": "title", "text": "DEMAT & INVESTMENT ACCOUNT RECORD" },
+    { "type": "subtitle", "text": "Account-level totals only; individual securities and credentials are intentionally not recorded" },
+    { "type": "section", "title": "ACCOUNT DETAILS", "fields": ["accountHolderName", "brokerOrDp", "depository", "dematAccountId", "holdingMode"] },
+    { "type": "section", "title": "APPROXIMATE VALUES", "fields": ["stocksValue", "mutualFundsValue", "cashOrOtherValue", "valueAsOfDate"] },
+    { "type": "section", "title": "REGISTERED CONTACT", "fields": ["registeredMobile", "registeredEmail"] },
+    { "type": "section", "title": "NOMINATION", "fields": ["nomineeStatus", "nomineeName", "nomineeRelationship", "nomineeMobile"] },
+    { "type": "section", "title": "RECOVERY CONTACT & DOCUMENTS", "fields": ["dpSupportPhone", "dpSupportEmail", "documentLocation", "importantNotes"] }
+  ],
+  "footer": "Last generated: {{system.generatedAt}}"
+}

@@ -1,0 +1,10 @@
+node_modules
+dist
+.pnpm-store
+.playwright-data
+coverage
+runtime-data
+vault-data
+output
+.git
+.env

@@ -1,0 +1,53 @@
+{
+  "templateId": "credit-cards",
+  "version": "1.4.0",
+  "name": "Credit cards",
+  "description": "A one-page summary of family credit cards, issuing providers, validity, and card networks.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "issuingBank1": { "label": "Issuing bank / provider", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Example Bank" },
+    "cardNumber1": { "label": "Credit-card number", "type": "string", "required": true, "minLength": 1, "maxLength": 34, "example": "SAMPLE-CARD-0001" },
+    "validThrough1": { "label": "Valid through (MM/YY)", "type": "string", "required": true, "minLength": 1, "maxLength": 5, "placeholder": "MM/YY", "example": "03/29" },
+    "cardNetwork1": { "label": "Card network", "type": "string", "required": true, "enum": ["Visa", "Mastercard", "RuPay"], "input": "enum", "example": "Visa" },
+
+    "issuingBank2": { "label": "Issuing bank / provider", "type": "string", "maxLength": 120, "example": "Example Cooperative Bank" },
+    "cardNumber2": { "label": "Credit-card number", "type": "string", "maxLength": 34, "example": "SAMPLE-CARD-0002" },
+    "validThrough2": { "label": "Valid through (MM/YY)", "type": "string", "maxLength": 5, "placeholder": "MM/YY", "example": "07/30" },
+    "cardNetwork2": { "label": "Card network", "type": "string", "enum": ["Visa", "Mastercard", "RuPay"], "input": "enum", "example": "Mastercard" },
+
+    "issuingBank3": { "label": "Issuing bank / provider", "type": "string", "maxLength": 120, "example": "Example City Bank" },
+    "cardNumber3": { "label": "Credit-card number", "type": "string", "maxLength": 34, "example": "SAMPLE-CARD-0003" },
+    "validThrough3": { "label": "Valid through (MM/YY)", "type": "string", "maxLength": 5, "placeholder": "MM/YY", "example": "11/28" },
+    "cardNetwork3": { "label": "Card network", "type": "string", "enum": ["Visa", "Mastercard", "RuPay"], "input": "enum", "example": "RuPay" },
+
+    "issuingBank4": { "label": "Issuing bank / provider", "type": "string", "maxLength": 120, "example": "Example Savings Bank" },
+    "cardNumber4": { "label": "Credit-card number", "type": "string", "maxLength": 34, "example": "SAMPLE-CARD-0004" },
+    "validThrough4": { "label": "Valid through (MM/YY)", "type": "string", "maxLength": 5, "placeholder": "MM/YY", "example": "02/31" },
+    "cardNetwork4": { "label": "Card network", "type": "string", "enum": ["Visa", "Mastercard", "RuPay"], "input": "enum", "example": "Visa" },
+
+    "issuingBank5": { "label": "Issuing bank / provider", "type": "string", "maxLength": 120, "example": "Example Community Bank" },
+    "cardNumber5": { "label": "Credit-card number", "type": "string", "maxLength": 34, "example": "SAMPLE-CARD-0005" },
+    "validThrough5": { "label": "Valid through (MM/YY)", "type": "string", "maxLength": 5, "placeholder": "MM/YY", "example": "09/29" },
+    "cardNetwork5": { "label": "Card network", "type": "string", "enum": ["Visa", "Mastercard", "RuPay"], "input": "enum", "example": "Mastercard" },
+
+    "issuingBank6": { "label": "Issuing bank / provider", "type": "string", "maxLength": 120, "example": "Example Regional Bank" },
+    "cardNumber6": { "label": "Credit-card number", "type": "string", "maxLength": 34, "example": "SAMPLE-CARD-0006" },
+    "validThrough6": { "label": "Valid through (MM/YY)", "type": "string", "maxLength": 5, "placeholder": "MM/YY", "example": "12/30" },
+    "cardNetwork6": { "label": "Card network", "type": "string", "enum": ["Visa", "Mastercard", "RuPay"], "input": "enum", "example": "RuPay" }
+  },
+  "layout": [
+    { "type": "title", "text": "CREDIT CARD RECORDS" },
+    { "type": "subtitle", "text": "For family reference; CVV / CVC is intentionally not recorded" },
+    { "type": "section", "title": "CREDIT CARD 1", "fields": ["issuingBank1", "cardNumber1", "validThrough1", "cardNetwork1"] },
+    { "type": "section", "title": "CREDIT CARD 2", "fields": ["issuingBank2", "cardNumber2", "validThrough2", "cardNetwork2"] },
+    { "type": "section", "title": "CREDIT CARD 3", "fields": ["issuingBank3", "cardNumber3", "validThrough3", "cardNetwork3"] },
+    { "type": "section", "title": "CREDIT CARD 4", "fields": ["issuingBank4", "cardNumber4", "validThrough4", "cardNetwork4"] },
+    { "type": "section", "title": "CREDIT CARD 5", "fields": ["issuingBank5", "cardNumber5", "validThrough5", "cardNetwork5"] },
+    { "type": "section", "title": "CREDIT CARD 6", "fields": ["issuingBank6", "cardNumber6", "validThrough6", "cardNetwork6"] }
+  ],
+  "footer": "Last generated: {{system.generatedAt}}   |   Document revision {{system.documentRevision}}"
+}
+

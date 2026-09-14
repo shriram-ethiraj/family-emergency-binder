@@ -1,0 +1,43 @@
+{
+  "templateId": "nps-account",
+  "version": "1.0.1",
+  "name": "NPS account",
+  "description": "A National Pension System account summary with approximate balances, nomination, and claim contacts.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "subscriberName": { "label": "Subscriber name", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Sample Subscriber" },
+    "pran": { "label": "PRAN", "type": "string", "required": true, "minLength": 1, "maxLength": 40, "example": "SAMPLE-PRAN-0001" },
+    "craOrProvider": { "label": "CRA / account provider", "type": "string", "required": true, "minLength": 1, "maxLength": 160, "example": "Example Recordkeeping Agency" },
+    "sectorOrAccountType": { "label": "Sector / account type", "type": "string", "maxLength": 120, "example": "All Citizen Model" },
+
+    "tierOneValue": { "label": "Approximate Tier I value (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 640000 },
+    "tierTwoValue": { "label": "Approximate Tier II value (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 85000 },
+
+    "registeredMobile": { "label": "Registered mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 90000 00000" },
+    "registeredEmail": { "label": "Registered email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "subscriber@example.invalid" },
+
+    "nomineeStatus": { "label": "Nominee status", "type": "string", "enum": ["Registered", "Not registered", "Not verified"], "input": "enum", "example": "Registered" },
+    "nomineeName": { "label": "Nominee name", "type": "string", "maxLength": 120, "example": "Sample Nominee" },
+    "nomineeRelationship": { "label": "Nominee relationship", "type": "string", "maxLength": 80, "example": "Spouse" },
+    "nomineeMobile": { "label": "Nominee mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 91111 11111" },
+
+    "popOrNodalOffice": { "label": "POP / nodal office", "type": "string", "maxLength": 180, "example": "Example NPS Service Centre" },
+    "supportPhone": { "label": "Claim support phone", "type": "string", "maxLength": 80, "input": "phone", "example": "1800 000 200" },
+    "supportEmail": { "label": "Claim support email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "nps-support@example.invalid" },
+    "documentLocation": { "label": "PRAN card / documents stored at", "type": "string", "maxLength": 300, "example": "Family binder, Retirement section" },
+    "importantNotes": { "label": "Important notes", "type": "string", "maxLength": 1500, "input": "multiline", "formatter": "multiline", "example": "Contact the POP or nodal office and quote the PRAN for claim assistance." }
+  },
+  "layout": [
+    { "type": "title", "text": "NPS ACCOUNT RECORD" },
+    { "type": "subtitle", "text": "For family reference and future claim assistance" },
+    { "type": "section", "title": "SUBSCRIBER & ACCOUNT", "fields": ["subscriberName", "pran", "craOrProvider", "sectorOrAccountType"] },
+    { "type": "section", "title": "APPROXIMATE VALUES", "fields": ["tierOneValue", "tierTwoValue"] },
+    { "type": "section", "title": "REGISTERED CONTACT", "fields": ["registeredMobile", "registeredEmail"] },
+    { "type": "section", "title": "NOMINATION", "fields": ["nomineeStatus", "nomineeName", "nomineeRelationship", "nomineeMobile"] },
+    { "type": "section", "title": "CLAIM CONTACT & DOCUMENTS", "fields": ["popOrNodalOffice", "supportPhone", "supportEmail", "documentLocation", "importantNotes"] }
+  ],
+  "footer": "Last generated: {{system.generatedAt}}"
+}

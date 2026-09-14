@@ -1,0 +1,59 @@
+{
+  "templateId": "fixed-deposits",
+  "version": "1.1.0",
+  "name": "Fixed deposits",
+  "description": "A one-page summary of family fixed deposits, deposit amounts, and maturity dates.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "bank1": { "label": "Bank", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Example National Bank" },
+    "fixedDepositNumber1": { "label": "Fixed-deposit number", "type": "string", "required": true, "minLength": 1, "maxLength": 40, "example": "SAMPLE-FD-0001" },
+    "amount1": { "label": "Amount (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 325000 },
+    "depositDate1": { "label": "Date of deposit", "type": "string", "required": true, "format": "date", "input": "date", "formatter": "date", "example": "2025-04-01" },
+    "maturityDate1": { "label": "Date of maturity", "type": "string", "required": true, "format": "date", "input": "date", "formatter": "date", "example": "2027-04-01" },
+
+    "bank2": { "label": "Bank", "type": "string", "maxLength": 120, "example": "Example Cooperative Bank" },
+    "fixedDepositNumber2": { "label": "Fixed-deposit number", "type": "string", "maxLength": 40, "example": "SAMPLE-FD-0002" },
+    "amount2": { "label": "Amount (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 210000 },
+    "depositDate2": { "label": "Date of deposit", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2025-08-15" },
+    "maturityDate2": { "label": "Date of maturity", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2027-08-15" },
+
+    "bank3": { "label": "Bank", "type": "string", "maxLength": 120, "example": "Example City Bank" },
+    "fixedDepositNumber3": { "label": "Fixed-deposit number", "type": "string", "maxLength": 40, "example": "SAMPLE-FD-0003" },
+    "amount3": { "label": "Amount (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 185000 },
+    "depositDate3": { "label": "Date of deposit", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2026-01-10" },
+    "maturityDate3": { "label": "Date of maturity", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2028-01-10" },
+
+    "bank4": { "label": "Bank", "type": "string", "maxLength": 120, "example": "Example Savings Bank" },
+    "fixedDepositNumber4": { "label": "Fixed-deposit number", "type": "string", "maxLength": 40, "example": "SAMPLE-FD-0004" },
+    "amount4": { "label": "Amount (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 150000 },
+    "depositDate4": { "label": "Date of deposit", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2026-03-20" },
+    "maturityDate4": { "label": "Date of maturity", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2028-03-20" },
+
+    "bank5": { "label": "Bank", "type": "string", "maxLength": 120, "example": "Example Community Bank" },
+    "fixedDepositNumber5": { "label": "Fixed-deposit number", "type": "string", "maxLength": 40, "example": "SAMPLE-FD-0005" },
+    "amount5": { "label": "Amount (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 120000 },
+    "depositDate5": { "label": "Date of deposit", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2026-05-05" },
+    "maturityDate5": { "label": "Date of maturity", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2028-05-05" },
+
+    "bank6": { "label": "Bank", "type": "string", "maxLength": 120, "example": "Example Regional Bank" },
+    "fixedDepositNumber6": { "label": "Fixed-deposit number", "type": "string", "maxLength": 40, "example": "SAMPLE-FD-0006" },
+    "amount6": { "label": "Amount (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 95000 },
+    "depositDate6": { "label": "Date of deposit", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2026-07-12" },
+    "maturityDate6": { "label": "Date of maturity", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2029-07-12" }
+  },
+  "layout": [
+    { "type": "title", "text": "FIXED DEPOSIT RECORDS" },
+    { "type": "subtitle", "text": "For family reference and maturity tracking" },
+    { "type": "section", "title": "FIXED DEPOSIT 1", "fields": ["bank1", "fixedDepositNumber1", "amount1", "depositDate1", "maturityDate1"] },
+    { "type": "section", "title": "FIXED DEPOSIT 2", "fields": ["bank2", "fixedDepositNumber2", "amount2", "depositDate2", "maturityDate2"] },
+    { "type": "section", "title": "FIXED DEPOSIT 3", "fields": ["bank3", "fixedDepositNumber3", "amount3", "depositDate3", "maturityDate3"] },
+    { "type": "section", "title": "FIXED DEPOSIT 4", "fields": ["bank4", "fixedDepositNumber4", "amount4", "depositDate4", "maturityDate4"] },
+    { "type": "section", "title": "FIXED DEPOSIT 5", "fields": ["bank5", "fixedDepositNumber5", "amount5", "depositDate5", "maturityDate5"] },
+    { "type": "section", "title": "FIXED DEPOSIT 6", "fields": ["bank6", "fixedDepositNumber6", "amount6", "depositDate6", "maturityDate6"] }
+  ],
+  "footer": "Last generated: {{system.generatedAt}}   |   Document revision {{system.documentRevision}}"
+}
+

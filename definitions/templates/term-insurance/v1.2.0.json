@@ -1,0 +1,50 @@
+{
+  "templateId": "term-insurance",
+  "version": "1.2.0",
+  "name": "Term insurance",
+  "description": "A concise policy summary with contacts, nominee details, storage locations, and claim information.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "fullName": { "label": "Full name", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Sample Policy Holder" },
+    "insuranceCompany": { "label": "Insurance company", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Example Life Insurance Company" },
+    "planName": { "label": "Policy or plan name", "type": "string", "required": true, "minLength": 1, "maxLength": 160, "example": "Secure Family Term Plan" },
+    "policyNumber": { "label": "Policy number", "type": "string", "required": true, "minLength": 1, "maxLength": 100, "example": "SAMPLE-2026-0001" },
+    "sumAssured": { "label": "Sum assured / life cover", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 15000000 },
+    "policyStartDate": { "label": "Policy start date", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2026-01-15" },
+    "policyEndDateOrTerm": { "label": "Policy end date or term", "type": "string", "maxLength": 100, "example": "15 Jan 2056 or 30 years" },
+    "premiumAmount": { "label": "Premium amount", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 24500 },
+    "premiumFrequency": { "label": "Premium frequency", "type": "string", "enum": ["Monthly", "Quarterly", "Half-yearly", "Annual", "Single"], "input": "enum", "example": "Annual" },
+    "registeredMobile": { "label": "Registered mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 90000 00000" },
+    "registeredEmail": { "label": "Registered email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "sample@example.invalid" },
+    "nomineeName": { "label": "Nominee name", "type": "string", "maxLength": 120, "example": "Sample Nominee" },
+    "nomineeRelationship": { "label": "Relationship", "type": "string", "maxLength": 80, "example": "Spouse" },
+    "nomineeMobile": { "label": "Nominee mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 91111 11111" },
+    "brokerProvider": { "label": "Broker or provider", "type": "string", "maxLength": 120, "example": "Example Broker" },
+    "brokerRegisteredMobile": { "label": "Registered mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 92222 22222" },
+    "brokerRegisteredEmail": { "label": "Registered email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "support@example.invalid" },
+    "brokerSupportNumber": { "label": "Support number", "type": "string", "maxLength": 80, "input": "phone", "example": "1800 000 000" },
+    "claimPhone": { "label": "Claim or customer care number", "type": "string", "maxLength": 80, "input": "phone", "example": "1800 111 111" },
+    "claimEmail": { "label": "Claim email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "claims@example.invalid" },
+    "claimWebsite": { "label": "Claim website or portal", "type": "string", "format": "uri", "maxLength": 240, "input": "url", "example": "https://example.invalid/claims" },
+    "printedPolicyLocation": { "label": "Printed policy stored at", "type": "string", "maxLength": 240, "example": "Family binder, Insurance section" },
+    "digitalPolicyLocation": { "label": "Digital policy PDF stored at", "type": "string", "maxLength": 300, "example": "/encrypted-drive/insurance/sample-policy.pdf" },
+    "riders": { "label": "Riders or additional benefits", "type": "string", "maxLength": 1000, "input": "multiline", "formatter": "multiline", "example": "Accidental death benefit and waiver of premium" },
+    "importantNotes": { "label": "Important notes", "type": "string", "maxLength": 2000, "input": "multiline", "formatter": "multiline", "example": "Contact the insurer directly and quote the policy number." }
+  },
+  "layout": [
+    { "type": "title", "text": "TERM INSURANCE POLICY RECORD" },
+    { "type": "subtitle", "text": "For family reference and future claim assistance" },
+    { "type": "section", "title": "POLICY HOLDER", "fields": ["fullName"] },
+    { "type": "section", "title": "POLICY DETAILS", "fields": ["insuranceCompany", "planName", "policyNumber", "sumAssured", "policyStartDate", "policyEndDateOrTerm", "premiumAmount", "premiumFrequency"] },
+    { "type": "section", "title": "REGISTERED CONTACT DETAILS", "fields": ["registeredMobile", "registeredEmail"] },
+    { "type": "section", "title": "NOMINEE DETAILS", "fields": ["nomineeName", "nomineeRelationship", "nomineeMobile"] },
+    { "type": "section", "title": "BROKER / PROVIDER", "fields": ["brokerProvider", "brokerRegisteredMobile", "brokerRegisteredEmail", "brokerSupportNumber"] },
+    { "type": "section", "title": "INSURANCE COMPANY CLAIM CONTACT", "fields": ["claimPhone", "claimEmail", "claimWebsite"] },
+    { "type": "section", "title": "DOCUMENTS & NOTES", "fields": ["printedPolicyLocation", "digitalPolicyLocation", "riders", "importantNotes"] }
+  ],
+  "footer": "Last generated: {{system.generatedAt}}   |   Document revision {{system.documentRevision}}"
+}
+

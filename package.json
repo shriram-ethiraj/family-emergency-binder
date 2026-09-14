@@ -1,0 +1,33 @@
+{
+  "name": "family-emergency-binder-creator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.21.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "pnpm --filter @family-emergency-binder/frontend dev",
+    "build": "pnpm --filter @family-emergency-binder/frontend build && pnpm --filter @family-emergency-binder/backend build",
+    "start": "node scripts/start.mjs",
+    "security:repo-check": "node scripts/check-no-private-files.mjs",
+    "templates:prepare": "pnpm --filter @family-emergency-binder/backend templates:prepare",
+    "lint": "pnpm --filter @family-emergency-binder/frontend lint",
+    "typecheck": "pnpm --filter @family-emergency-binder/frontend typecheck && pnpm --filter @family-emergency-binder/backend typecheck",
+    "test": "pnpm --filter @family-emergency-binder/backend test && pnpm --filter @family-emergency-binder/frontend test",
+    "test:server": "pnpm --filter @family-emergency-binder/backend test",
+    "test:client": "pnpm --filter @family-emergency-binder/frontend test",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "dotenv": "17.2.2"
+  },
+  "packageManager": "pnpm@10.11.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "templateId": "bank-accounts",
+  "version": "1.0.0",
+  "name": "Bank accounts",
+  "description": "A one-page summary of family bank accounts, branch details, IFSC codes, and current balances.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "bankName1": { "label": "Bank name", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Example National Bank" },
+    "accountNumber1": { "label": "Account number", "type": "string", "required": true, "minLength": 1, "maxLength": 34, "example": "SAMPLE-ACCOUNT-0001" },
+    "branch1": { "label": "Branch", "type": "string", "required": true, "minLength": 1, "maxLength": 160, "example": "Central sample branch" },
+    "ifscCode1": { "label": "IFSC code", "type": "string", "required": true, "minLength": 1, "maxLength": 20, "example": "SAMP0000001" },
+    "balance1": { "label": "Balance (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 125000 },
+
+    "bankName2": { "label": "Bank name", "type": "string", "maxLength": 120, "example": "Example Cooperative Bank" },
+    "accountNumber2": { "label": "Account number", "type": "string", "maxLength": 34, "example": "SAMPLE-ACCOUNT-0002" },
+    "branch2": { "label": "Branch", "type": "string", "maxLength": 160, "example": "North sample branch" },
+    "ifscCode2": { "label": "IFSC code", "type": "string", "maxLength": 20, "example": "SAMP0000002" },
+    "balance2": { "label": "Balance (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 84500 },
+
+    "bankName3": { "label": "Bank name", "type": "string", "maxLength": 120, "example": "Example City Bank" },
+    "accountNumber3": { "label": "Account number", "type": "string", "maxLength": 34, "example": "SAMPLE-ACCOUNT-0003" },
+    "branch3": { "label": "Branch", "type": "string", "maxLength": 160, "example": "East sample branch" },
+    "ifscCode3": { "label": "IFSC code", "type": "string", "maxLength": 20, "example": "SAMP0000003" },
+    "balance3": { "label": "Balance (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 63200 },
+
+    "bankName4": { "label": "Bank name", "type": "string", "maxLength": 120, "example": "Example Savings Bank" },
+    "accountNumber4": { "label": "Account number", "type": "string", "maxLength": 34, "example": "SAMPLE-ACCOUNT-0004" },
+    "branch4": { "label": "Branch", "type": "string", "maxLength": 160, "example": "West sample branch" },
+    "ifscCode4": { "label": "IFSC code", "type": "string", "maxLength": 20, "example": "SAMP0000004" },
+    "balance4": { "label": "Balance (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 41800 },
+
+    "bankName5": { "label": "Bank name", "type": "string", "maxLength": 120, "example": "Example Community Bank" },
+    "accountNumber5": { "label": "Account number", "type": "string", "maxLength": 34, "example": "SAMPLE-ACCOUNT-0005" },
+    "branch5": { "label": "Branch", "type": "string", "maxLength": 160, "example": "South sample branch" },
+    "ifscCode5": { "label": "IFSC code", "type": "string", "maxLength": 20, "example": "SAMP0000005" },
+    "balance5": { "label": "Balance (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 27900 },
+
+    "bankName6": { "label": "Bank name", "type": "string", "maxLength": 120, "example": "Example Regional Bank" },
+    "accountNumber6": { "label": "Account number", "type": "string", "maxLength": 34, "example": "SAMPLE-ACCOUNT-0006" },
+    "branch6": { "label": "Branch", "type": "string", "maxLength": 160, "example": "Market sample branch" },
+    "ifscCode6": { "label": "IFSC code", "type": "string", "maxLength": 20, "example": "SAMP0000006" },
+    "balance6": { "label": "Balance (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 15600 }
+  },
+  "layout": [
+    { "type": "title", "text": "BANK ACCOUNT RECORDS" },
+    { "type": "subtitle", "text": "For family reference and balance tracking" },
+    { "type": "section", "title": "BANK ACCOUNT 1", "fields": ["bankName1", "accountNumber1", "branch1", "ifscCode1", "balance1"] },
+    { "type": "section", "title": "BANK ACCOUNT 2", "fields": ["bankName2", "accountNumber2", "branch2", "ifscCode2", "balance2"] },
+    { "type": "section", "title": "BANK ACCOUNT 3", "fields": ["bankName3", "accountNumber3", "branch3", "ifscCode3", "balance3"] },
+    { "type": "section", "title": "BANK ACCOUNT 4", "fields": ["bankName4", "accountNumber4", "branch4", "ifscCode4", "balance4"] },
+    { "type": "section", "title": "BANK ACCOUNT 5", "fields": ["bankName5", "accountNumber5", "branch5", "ifscCode5", "balance5"] },
+    { "type": "section", "title": "BANK ACCOUNT 6", "fields": ["bankName6", "accountNumber6", "branch6", "ifscCode6", "balance6"] },
+    { "type": "text", "text": "Last generated: {{system.generatedAt}}   |   Document revision {{system.documentRevision}}", "style": "note" }
+  ],
+  "footer": "Keep this sheet with the related bank documents"
+}

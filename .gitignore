@@ -1,0 +1,43 @@
+# Dependencies, build output, and caches
+node_modules/
+dist/
+coverage/
+.vite/
+.pnpm-store/
+.playwright-data/
+playwright-report/
+test-results/
+*.tsbuildinfo
+*.log
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*recovery-key*.txt
+
+# Private vault data, temporary files, and generated documents
+vault-data/
+runtime-data/
+output/
+*.febcvault
+*.febcvault.*
+*.vault
+*.vault.*
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.part
+*.pdf
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/

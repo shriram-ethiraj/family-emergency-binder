@@ -1,0 +1,272 @@
+{
+  "templateId": "health-insurance",
+  "version": "1.1.0",
+  "name": "Health insurance",
+  "description": "A one-page health insurance summary for family reference, cashless care, and claim assistance.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "policyholderName": {
+      "label": "Policyholder name",
+      "type": "string",
+      "required": true,
+      "minLength": 1,
+      "maxLength": 120,
+      "example": "Sample Policy Holder"
+    },
+    "coverageType": {
+      "label": "Policy type",
+      "type": "string",
+      "required": true,
+      "enum": ["Individual", "Family Floater"],
+      "input": "enum",
+      "example": "Family Floater"
+    },
+    "member1Name": {
+      "label": "Member 1 name",
+      "type": "string",
+      "required": true,
+      "minLength": 1,
+      "maxLength": 120,
+      "example": "Sample Policy Holder"
+    },
+    "member1HealthCardNumber": {
+      "label": "Member 1 health-card / member number",
+      "type": "string",
+      "maxLength": 100,
+      "example": "HC-SAMPLE-0001"
+    },
+    "member2Name": {
+      "label": "Member 2 name",
+      "type": "string",
+      "maxLength": 120,
+      "example": "Sample Family Member"
+    },
+    "member2HealthCardNumber": {
+      "label": "Member 2 health-card / member number",
+      "type": "string",
+      "maxLength": 100,
+      "example": "HC-SAMPLE-0002"
+    },
+    "member3Name": {
+      "label": "Member 3 name",
+      "type": "string",
+      "maxLength": 120,
+      "example": "Sample Family Member 3"
+    },
+    "member3HealthCardNumber": {
+      "label": "Member 3 health-card / member number",
+      "type": "string",
+      "maxLength": 100,
+      "example": "HC-SAMPLE-0003"
+    },
+    "member4Name": {
+      "label": "Member 4 name",
+      "type": "string",
+      "maxLength": 120,
+      "example": "Sample Family Member 4"
+    },
+    "member4HealthCardNumber": {
+      "label": "Member 4 health-card / member number",
+      "type": "string",
+      "maxLength": 100,
+      "example": "HC-SAMPLE-0004"
+    },
+    "member5Name": {
+      "label": "Member 5 name",
+      "type": "string",
+      "maxLength": 120,
+      "example": "Sample Family Member 5"
+    },
+    "member5HealthCardNumber": {
+      "label": "Member 5 health-card / member number",
+      "type": "string",
+      "maxLength": 100,
+      "example": "HC-SAMPLE-0005"
+    },
+    "member6Name": {
+      "label": "Member 6 name",
+      "type": "string",
+      "maxLength": 120,
+      "example": "Sample Family Member 6"
+    },
+    "member6HealthCardNumber": {
+      "label": "Member 6 health-card / member number",
+      "type": "string",
+      "maxLength": 100,
+      "example": "HC-SAMPLE-0006"
+    },
+    "insuranceCompany": {
+      "label": "Insurance company",
+      "type": "string",
+      "required": true,
+      "minLength": 1,
+      "maxLength": 120,
+      "example": "Example Health Insurer"
+    },
+    "planName": {
+      "label": "Plan name",
+      "type": "string",
+      "required": true,
+      "minLength": 1,
+      "maxLength": 160,
+      "example": "Family Health Secure"
+    },
+    "policyNumber": {
+      "label": "Policy number",
+      "type": "string",
+      "required": true,
+      "minLength": 1,
+      "maxLength": 100,
+      "example": "SAMPLE-HEALTH-2026-0001"
+    },
+    "policyStartDate": {
+      "label": "Policy start date",
+      "type": "string",
+      "required": true,
+      "format": "date",
+      "input": "date",
+      "formatter": "date",
+      "example": "2026-01-15"
+    },
+    "renewalDueDate": {
+      "label": "Renewal due date",
+      "type": "string",
+      "required": true,
+      "format": "date",
+      "input": "date",
+      "formatter": "date",
+      "example": "2027-01-15"
+    },
+    "sumInsured": {
+      "label": "Sum insured",
+      "type": "number",
+      "required": true,
+      "minimum": 0,
+      "input": "money",
+      "formatter": "money",
+      "example": 1000000
+    },
+    "coverageSummary": {
+      "label": "Coverage summary",
+      "type": "string",
+      "maxLength": 420,
+      "input": "multiline",
+      "example": "Hospitalisation, pre- and post-hospitalisation, day-care procedures, and ambulance cover as stated in the policy documents."
+    },
+    "keyLimitsAndWaitingPeriods": {
+      "label": "Key limits, cost-sharing and waiting periods",
+      "type": "string",
+      "maxLength": 480,
+      "input": "multiline",
+      "example": "Room / ICU limit: As per schedule; co-pay: None; deductible: None; pre-existing disease waiting period: 24 months; specified-treatment waiting period: 12 months."
+    },
+    "keyExclusions": {
+      "label": "Key exclusions",
+      "type": "string",
+      "maxLength": 360,
+      "input": "multiline",
+      "example": "Record the major exclusions listed in the policy schedule and customer information sheet."
+    },
+    "tpaName": {
+      "label": "TPA name",
+      "type": "string",
+      "maxLength": 120,
+      "example": "Example Health Services TPA"
+    },
+    "claimPhone": {
+      "label": "Claim / emergency phone",
+      "type": "string",
+      "required": true,
+      "maxLength": 80,
+      "input": "phone",
+      "example": "1800 000 000"
+    },
+    "claimEmail": {
+      "label": "Claim email",
+      "type": "string",
+      "format": "email",
+      "maxLength": 160,
+      "input": "email",
+      "example": "claims@example.invalid"
+    },
+    "networkHospitalLookup": {
+      "label": "Network-hospital lookup",
+      "type": "string",
+      "format": "uri",
+      "maxLength": 240,
+      "input": "url",
+      "example": "https://example.invalid/network-hospitals"
+    },
+    "policyDocumentLocation": {
+      "label": "Policy and e-card document location",
+      "type": "string",
+      "maxLength": 300,
+      "input": "multiline",
+      "example": "Printed: family binder, Insurance section\nDigital: encrypted drive, Health Insurance folder"
+    },
+    "importantNotes": {
+      "label": "Important notes",
+      "type": "string",
+      "maxLength": 360,
+      "input": "multiline",
+      "example": "For planned admission, follow the policy's pre-authorisation steps. In an emergency, contact the insurer or TPA as soon as possible and retain all bills and discharge papers."
+    }
+  },
+  "layout": [
+    {
+      "type": "title",
+      "text": "HEALTH INSURANCE POLICY RECORD"
+    },
+    {
+      "type": "subtitle",
+      "text": "For family reference, cashless care, and claim assistance"
+    },
+    {
+      "type": "section",
+      "title": "POLICY HOLDER",
+      "fields": ["policyholderName", "coverageType"]
+    },
+    {
+      "type": "pairedTable",
+      "title": "COVERED MEMBERS & HEALTH-CARD NUMBERS",
+      "columns": ["Covered member", "Health-card / member number"],
+      "rows": [
+        { "left": "member1Name", "right": "member1HealthCardNumber" },
+        { "left": "member2Name", "right": "member2HealthCardNumber" },
+        { "left": "member3Name", "right": "member3HealthCardNumber" },
+        { "left": "member4Name", "right": "member4HealthCardNumber" },
+        { "left": "member5Name", "right": "member5HealthCardNumber" },
+        { "left": "member6Name", "right": "member6HealthCardNumber" }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "POLICY DETAILS",
+      "fields": ["insuranceCompany", "planName", "policyNumber", "policyStartDate", "renewalDueDate", "sumInsured"]
+    },
+    {
+      "type": "section",
+      "title": "COVERAGE SUMMARY",
+      "fields": ["coverageSummary", "keyLimitsAndWaitingPeriods", "keyExclusions"]
+    },
+    {
+      "type": "section",
+      "title": "CLAIM & DOCUMENTS",
+      "fields": ["tpaName", "claimPhone", "claimEmail", "networkHospitalLookup", "policyDocumentLocation", "importantNotes"]
+    },
+    {
+      "type": "text",
+      "text": "Cashless care generally uses a network hospital and insurer / TPA pre-authorisation; follow the current policy and contact instructions.",
+      "style": "note"
+    },
+    {
+      "type": "text",
+      "text": "Last generated: {{system.generatedAt}}   |   Document revision {{system.documentRevision}}",
+      "style": "note"
+    }
+  ],
+  "footer": "Keep this sheet with the current health policy documents"
+}

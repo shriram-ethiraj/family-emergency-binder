@@ -1,0 +1,46 @@
+{
+  "templateId": "provident-fund",
+  "version": "1.0.0",
+  "name": "Provident fund",
+  "description": "An EPF or exempted provident-fund summary with UAN details, approximate balance, coverage, nomination, and claim contacts.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "memberName": { "label": "Member name", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Sample PF Member" },
+    "uan": { "label": "Universal Account Number (UAN)", "type": "string", "required": true, "minLength": 1, "maxLength": 40, "example": "SAMPLE-UAN-0001" },
+    "currentMemberId": { "label": "Current PF member ID", "type": "string", "maxLength": 80, "example": "SAMPLE-PF-MEMBER-0001" },
+    "currentEmployer": { "label": "Current / latest employer", "type": "string", "maxLength": 180, "example": "Example Services Private Limited" },
+    "pfAdministrator": { "label": "PF administrator", "type": "string", "required": true, "enum": ["EPFO", "Exempted PF trust", "Other / not verified"], "input": "enum", "example": "EPFO" },
+
+    "epfBalance": { "label": "Approximate EPF balance (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 920000 },
+    "valueAsOfDate": { "label": "Balance as of", "type": "string", "required": true, "format": "date", "input": "date", "formatter": "date", "example": "2026-09-01" },
+    "epsStatus": { "label": "EPS pension coverage", "type": "string", "enum": ["Covered", "Not covered", "Not verified"], "input": "enum", "example": "Covered" },
+    "edliStatus": { "label": "EDLI insurance coverage", "type": "string", "enum": ["Covered", "Not covered", "Not verified"], "input": "enum", "example": "Covered" },
+
+    "registeredMobile": { "label": "Registered mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 90000 00000" },
+    "registeredEmail": { "label": "Registered email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "member@example.invalid" },
+
+    "nomineeStatus": { "label": "E-nomination status", "type": "string", "enum": ["Registered", "Not registered", "Not verified"], "input": "enum", "example": "Registered" },
+    "nomineeName": { "label": "Nominee name", "type": "string", "maxLength": 120, "example": "Sample Nominee" },
+    "nomineeRelationship": { "label": "Nominee relationship", "type": "string", "maxLength": 80, "example": "Spouse" },
+    "nomineeMobile": { "label": "Nominee mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 91111 11111" },
+
+    "officeOrTrustName": { "label": "EPFO office / PF trust contact", "type": "string", "maxLength": 180, "example": "Example Regional PF Office" },
+    "supportPhone": { "label": "Claim support phone", "type": "string", "maxLength": 80, "input": "phone", "example": "1800 000 300" },
+    "supportEmail": { "label": "Claim support email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "pf-support@example.invalid" },
+    "documentLocation": { "label": "Statements / documents stored at", "type": "string", "maxLength": 300, "example": "Family binder, Retirement section" },
+    "importantNotes": { "label": "Important notes", "type": "string", "maxLength": 1500, "input": "multiline", "formatter": "multiline", "example": "Use the UAN and latest member ID when contacting the PF administrator about member benefits." }
+  },
+  "layout": [
+    { "type": "title", "text": "PROVIDENT FUND RECORD" },
+    { "type": "subtitle", "text": "For EPF, pension, insurance, and future claim reference" },
+    { "type": "section", "title": "MEMBER & ACCOUNT", "fields": ["memberName", "uan", "currentMemberId", "currentEmployer", "pfAdministrator"] },
+    { "type": "section", "title": "BALANCE & COVERAGE", "fields": ["epfBalance", "valueAsOfDate", "epsStatus", "edliStatus"] },
+    { "type": "section", "title": "REGISTERED CONTACT", "fields": ["registeredMobile", "registeredEmail"] },
+    { "type": "section", "title": "E-NOMINATION", "fields": ["nomineeStatus", "nomineeName", "nomineeRelationship", "nomineeMobile"] },
+    { "type": "section", "title": "CLAIM CONTACT & DOCUMENTS", "fields": ["officeOrTrustName", "supportPhone", "supportEmail", "documentLocation", "importantNotes"] }
+  ],
+  "footer": "Last generated: {{system.generatedAt}}"
+}

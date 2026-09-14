@@ -1,0 +1,6 @@
+interface:
+  display_name: "FEBC Security Review"
+  short_description: "Review the binder creator security model"
+  default_prompt: "Use $febc-security-review to review this security-sensitive change."
+policy:
+  allow_implicit_invocation: true

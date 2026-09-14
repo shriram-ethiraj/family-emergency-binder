@@ -1,0 +1,45 @@
+{
+  "templateId": "employer-contacts",
+  "version": "1.0.0",
+  "name": "Employer contacts",
+  "description": "A contact-focused employment record so family members know whom to notify at the company.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "employeeName": { "label": "Employee name", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Sample Employee" },
+    "companyLegalName": { "label": "Company legal name", "type": "string", "required": true, "minLength": 1, "maxLength": 180, "example": "Example Technology Private Limited" },
+    "employeeId": { "label": "Employee ID", "type": "string", "required": true, "minLength": 1, "maxLength": 80, "example": "SAMPLE-EMP-0001" },
+    "workEmail": { "label": "Work email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "employee@example.invalid" },
+    "roleOrBusinessUnit": { "label": "Role / business unit", "type": "string", "maxLength": 160, "example": "Sample Operations Team" },
+    "officeLocation": { "label": "Office location", "type": "string", "maxLength": 200, "example": "Example Bengaluru Office" },
+
+    "managerName": { "label": "Manager name", "type": "string", "maxLength": 120, "example": "Sample Manager" },
+    "managerPhone": { "label": "Manager phone", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 91111 11111" },
+    "managerEmail": { "label": "Manager email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "manager@example.invalid" },
+
+    "hrContactName": { "label": "HR contact name", "type": "string", "maxLength": 120, "example": "Sample HR Contact" },
+    "hrContactPhone": { "label": "HR contact phone", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 92222 22222" },
+    "hrContactEmail": { "label": "HR contact email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "hr@example.invalid" },
+
+    "payrollContactName": { "label": "Payroll / benefits contact name", "type": "string", "maxLength": 120, "example": "Sample Payroll Contact" },
+    "payrollContactPhone": { "label": "Payroll / benefits contact phone", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 93333 33333" },
+    "payrollContactEmail": { "label": "Payroll / benefits contact email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "payroll@example.invalid" },
+
+    "companyMainPhone": { "label": "Company main phone", "type": "string", "maxLength": 80, "input": "phone", "example": "+91 80 4000 0000" },
+    "companyMainEmail": { "label": "Company main email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "contact@example.invalid" },
+    "documentLocation": { "label": "Employment documents stored at", "type": "string", "maxLength": 300, "example": "Family binder, Employment section" },
+    "emergencyNotes": { "label": "Emergency notes", "type": "string", "maxLength": 1500, "input": "multiline", "formatter": "multiline", "example": "Ask HR to coordinate the company notification process and explain the next administrative steps." }
+  },
+  "layout": [
+    { "type": "title", "text": "EMPLOYER CONTACT RECORD" },
+    { "type": "subtitle", "text": "Who family members should contact at the company" },
+    { "type": "section", "title": "EMPLOYMENT DETAILS", "fields": ["employeeName", "companyLegalName", "employeeId", "workEmail", "roleOrBusinessUnit", "officeLocation"] },
+    { "type": "section", "title": "MANAGER", "fields": ["managerName", "managerPhone", "managerEmail"] },
+    { "type": "section", "title": "HUMAN RESOURCES", "fields": ["hrContactName", "hrContactPhone", "hrContactEmail"] },
+    { "type": "section", "title": "PAYROLL / BENEFITS CONTACT", "fields": ["payrollContactName", "payrollContactPhone", "payrollContactEmail"] },
+    { "type": "section", "title": "COMPANY & DOCUMENTS", "fields": ["companyMainPhone", "companyMainEmail", "documentLocation", "emergencyNotes"] }
+  ],
+  "footer": "Last generated: {{system.generatedAt}}"
+}
