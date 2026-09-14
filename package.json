@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
-    "dotenv": "17.2.2"
+    "dotenv": "17.4.2"
   },
   "packageManager": "pnpm@10.11.0",
   "pnpm": {
