@@ -15,6 +15,7 @@
 - Mutating routes require the in-memory session and matching CSRF header. Host and Origin checks restrict browser traffic to the active localhost origin; responses receive restrictive security headers.
 - Unlock and sensitive operations are rate-limited; repeated password failures persist a temporary profile lockout.
 - The portable vault uses one process-lifetime native SQLite connection with exclusive SQLite/OS locking, full synchronization, a truncate journal, foreign keys, secure deletion, serialized transactions, startup integrity checks, and restrictive best-effort permissions. SQLite locks are released by the OS after normal shutdown, crashes, or forced termination; no sentinel lock file is used.
+- Docker Compose uses a network-disabled, one-shot storage initializer with narrowly scoped filesystem capabilities to normalize the dedicated vault, output, and template-cache mounts before starting the unprivileged, capability-free backend.
 - Template assets must stay local and within allowed roots. Generated PDFs require password confirmation, use exclusive output creation, and record a SHA-256 receipt. Per the product's filename requirement, output filenames may expose sanitized lowercase template, profile, and document-label names, but never document field values.
 
 ## Review checklist

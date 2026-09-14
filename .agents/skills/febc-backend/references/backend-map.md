@@ -11,6 +11,7 @@
 
 - `src/vault.ts` owns profiles, encrypted JSON records, document revisions, archive/purge behavior, generation receipts, audit events, key wrapping, AAD binding, and serialized per-profile mutations.
 - `src/storage.ts` owns the single native `node:sqlite` database, process-lifetime exclusive SQLite locking, schema compatibility checks, foreign keys, integrity checks, permissions, and transactional rollback. Avoid bypassing the vault and storage layers from HTTP handlers.
+- `src/storage-init.ts` is the internal Docker Compose entrypoint that recursively normalizes the three dedicated writable mounts without following symbolic links; it exits before the unprivileged backend starts.
 - `src/definitions.ts` validates and compiles versioned template JSON; `src/template-thumbnails.ts` prepares cached previews.
 - `src/pdf.ts` renders protected PDFs and persists them with exclusive filenames and SHA-256 receipts.
 

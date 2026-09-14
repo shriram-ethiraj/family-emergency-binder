@@ -12,17 +12,38 @@ By default, the database is created at `./vault-data/family-emergency-binder.feb
 
 ## Run with Docker
 
-Docker Desktop or Docker Engine with Compose is supported on Windows, macOS, and Linux.
+Docker Compose is the only runtime prerequisite. Install [Docker Desktop](https://docs.docker.com/desktop/) on Windows or macOS, or [Docker Engine](https://docs.docker.com/engine/install/) and the [Compose plugin](https://docs.docker.com/compose/install/linux/) on Linux. Confirm that Compose is available and the Docker service is running:
 
-1. Copy `.env.example` to `.env`.
-2. Leave `VAULT_DIR=./vault-data`, or set it to a mounted pen-drive directory. Paths with spaces are supported; Windows users should use a path such as `D:/Family Emergency Binder`.
-3. Create the configured vault, output, and template-cache directories if they do not exist.
-4. Run `docker compose up --build`.
-5. Open `http://127.0.0.1:4173`.
+```text
+docker compose version
+```
 
-Production Compose runs separate `frontend` and `backend` services. The frontend is the only published service: it serves the Vite build through an unprivileged Nginx process and proxies `/api` internally to Fastify. The backend has no published host port and is the only service that mounts the vault, output, template-cache, and definitions directories.
+From the repository directory, start the complete application:
 
-The host port is published only on localhost. Inside the container, the server listens on all container interfaces so Docker's port forwarding can reach it. The app runs as a non-root user and has a read-only application filesystem. Only the configured vault and output directories are writable.
+```text
+docker compose up --build
+```
+
+Docker creates the default vault, generated-output, and template-cache directories when needed. A one-shot initialization container gives them restrictive permissions before the unprivileged backend starts. Open `http://127.0.0.1:4173` after the services become healthy.
+
+The default vault directory is `./vault-data`. Choosing another location is optional. To save a custom location, copy `.env.example` to `.env` and edit `VAULT_DIR`. For a one-time Linux or macOS launch, use:
+
+```text
+VAULT_DIR="/absolute/path/Family Emergency Binder" docker compose up --build
+```
+
+For a one-time PowerShell launch, use:
+
+```text
+$env:VAULT_DIR = "D:/Family Emergency Binder"
+docker compose up --build
+```
+
+Paths with spaces are supported. Use forward slashes in Windows paths. `VAULT_DIR`, `OUTPUT_DIR`, and `TEMPLATE_CACHE_DIR` must each identify a directory dedicated to this application, not the root of a pen drive or a directory shared with unrelated files. The storage initializer recursively normalizes ownership and permissions within these directories on every startup.
+
+Production Compose runs separate `frontend` and `backend` services. The frontend is the only published service: it serves the Vite build through an unprivileged Nginx process and proxies `/api` internally to Fastify. The backend has no published host port. Only the backend and the network-disabled storage initializer mount the vault, output, and template-cache directories; only the backend mounts the template definitions.
+
+The host port is published only on localhost. Inside the container, the server listens on all container interfaces so Docker's port forwarding can reach it. The application services run as non-root users with read-only application filesystems. Only the configured vault, output, and template-cache mounts are writable. The storage initializer runs briefly with only the capabilities needed to set ownership and permissions, exits before the backend starts, and is not exposed on the network.
 
 ## Develop with Docker and live reload
 
@@ -101,7 +122,7 @@ pnpm build
 
 ## Pen-drive workflow
 
-The simplest workflow is to keep the working vault in `vault-data` and copy only `family-emergency-binder.febcvault` to or from the pen drive.
+The simplest workflow is to keep the working vault in `vault-data` and copy only `family-emergency-binder.febcvault` to or from the pen drive. If the application works directly from a pen drive, configure a dedicated subdirectory on that drive as `VAULT_DIR`; do not use the drive root.
 
 Before copying or ejecting the drive:
 

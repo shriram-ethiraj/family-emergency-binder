@@ -1,12 +1,55 @@
+x-backend-development-build: &backend-development-build
+  context: .
+  dockerfile: apps/backend/Dockerfile
+  target: development
+  args:
+    NODE_VERSION: ${NODE_VERSION:-24.21.0}
+
+x-backend-runtime-build: &backend-runtime-build
+  context: .
+  dockerfile: apps/backend/Dockerfile
+  target: runtime
+  args:
+    NODE_VERSION: ${NODE_VERSION:-24.21.0}
+
+x-storage-volumes: &storage-volumes
+  - type: bind
+    source: ${VAULT_DIR:-./vault-data}
+    target: /vault
+  - type: bind
+    source: ${OUTPUT_DIR:-./output}
+    target: /output
+  - type: bind
+    source: ${TEMPLATE_CACHE_DIR:-./runtime-data/template-cache}
+    target: /template-cache
+
 services:
+  storage-init:
+    build:
+      <<: *backend-runtime-build
+    user: "0:0"
+    entrypoint: ["node", "dist/storage-init.js"]
+    command: []
+    volumes: *storage-volumes
+    network_mode: none
+    read_only: true
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+
   backend:
     build:
-      context: .
-      dockerfile: apps/backend/Dockerfile
-      target: development
-      args:
-        NODE_VERSION: ${NODE_VERSION:-24.21.0}
+      <<: *backend-development-build
     init: true
+    depends_on:
+      storage-init:
+        condition: service_completed_successfully
     environment:
       NODE_ENV: development
       HOST: "0.0.0.0"
