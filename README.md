@@ -1,153 +1,61 @@
 # Family Emergency Binder Creator
 
-A private, local-first application for creating and managing printable family emergency binders. Create versioned records from self-contained templates and generate password-protected PDFs in template-defined paper sizes.
+A private, browser-only application for creating encrypted family emergency binder records and password-protected PDFs. The distributable is one HTML file; recipients do not need Docker, Node.js, a server, an installation, or an internet connection.
 
-## Private storage
+## Use the application
 
-All profiles live in one native SQLite file named `family-emergency-binder.febcvault`. Profile names and structural record metadata remain queryable, while user-entered profile details, document labels and complete template records, receipt details, and audit subjects are stored as independently authenticated encrypted JSON blobs. Template fields never become database columns.
+1. Build the distributable with `pnpm install && pnpm build`, then open `dist/family-emergency-binder.html`.
+2. Double-click it and open it in a current desktop browser. Chrome, Edge, or another Chromium browser is recommended.
+3. Choose **Open vault** and select a `.febvault`, or choose **Create vault** and save a new one anywhere on a hard disk or removable drive.
+4. Enter the single vault password, then choose a profile.
+5. Wait for the persistent status to say **Saved** before locking the vault, closing the browser, copying the file, or ejecting a removable drive.
 
-Passwords are never stored. A password is processed with scrypt and used to unwrap a random profile data key. The printable recovery key independently wraps the same data key and should be kept separately from the database and password.
+Chrome, Edge, and compatible Chromium browsers update the selected vault in place. Firefox and Safari run in compatibility mode because they do not expose equivalent user-visible writable file handles: they open a vault through a standard file chooser and download a new encrypted copy after the user selects **Download updated vault**. Compatibility mode shows a persistent warning, blocks locking while a newer copy is required, and warns before closing. Always keep the newest download. The application asks the user to choose a vault on every start and never stores a file handle in browser storage.
 
-By default, the database is created at `./vault-data/family-emergency-binder.febcvault`. This directory and every supported database/output extension are ignored by Git.
+## Vaults and backups
 
-## Run with Docker
+A `.febvault` is a portable, encrypted JSON envelope. One password unlocks every profile in that file. Profile names, document labels, field values, immutable revisions, and pinned template snapshots are encrypted together with AES-256-GCM. PBKDF2-HMAC-SHA-256 with at least 600,000 iterations derives the password wrapping key. A separately stored 256-bit recovery key can replace a forgotten password.
 
-Docker Compose is the only runtime prerequisite. Install [Docker Desktop](https://docs.docker.com/desktop/) on Windows or macOS, or [Docker Engine](https://docs.docker.com/engine/install/) and the [Compose plugin](https://docs.docker.com/compose/install/linux/) on Linux. Confirm that Compose is available and the Docker service is running:
+In Chromium mode, every explicit mutation is written to the selected file before the UI reports success. In Firefox/Safari compatibility mode, mutations update the encrypted in-memory generation and show **Download required** until a new `.febvault` has been downloaded. The app does not try to save during browser close. A failed or externally conflicting direct write is reported and never shown as saved. Do not open the same vault in two app windows.
 
-```text
-docker compose version
-```
+Use **Save vault copy** in Chromium, or **Download updated vault** in compatibility mode, to create another complete `.febvault`. A single working file is not, by itself, a backup; keep a separate copy and keep the recovery key away from both copies.
 
-From the repository directory, start the complete application:
+Generated PDFs are saved directly through a browser Save dialog. Each PDF uses a separate password supplied at generation time. The app deliberately keeps no generated-PDF history or PDF bytes in the vault.
 
-```text
-docker compose up --build
-```
+## Development
 
-Docker creates the default vault, generated-output, and template-cache directories when needed. A one-shot initialization container gives them restrictive permissions before the unprivileged backend starts. Open `http://127.0.0.1:4173` after the services become healthy.
-
-The default vault directory is `./vault-data`. Choosing another location is optional. To save a custom location, copy `.env.example` to `.env` and edit `VAULT_DIR`. For a one-time Linux or macOS launch, use:
+Development requires Node.js 24.21 or later and pnpm 10.11. End users do not need either.
 
 ```text
-VAULT_DIR="/absolute/path/Family Emergency Binder" docker compose up --build
-```
-
-For a one-time PowerShell launch, use:
-
-```text
-$env:VAULT_DIR = "D:/Family Emergency Binder"
-docker compose up --build
-```
-
-Paths with spaces are supported. Use forward slashes in Windows paths. `VAULT_DIR`, `OUTPUT_DIR`, and `TEMPLATE_CACHE_DIR` must each identify a directory dedicated to this application, not the root of a pen drive or a directory shared with unrelated files. The storage initializer recursively normalizes ownership and permissions within these directories on every startup.
-
-Production Compose runs separate `frontend` and `backend` services. The frontend is the only published service: it serves the Vite build through an unprivileged Nginx process and proxies `/api` internally to Fastify. The backend has no published host port. Only the backend and the network-disabled storage initializer mount the vault, output, and template-cache directories; only the backend mounts the template definitions.
-
-The host port is published only on localhost. Inside the container, the server listens on all container interfaces so Docker's port forwarding can reach it. The application services run as non-root users with read-only application filesystems. Only the configured vault, output, and template-cache mounts are writable. The storage initializer runs briefly with only the capabilities needed to set ownership and permissions, exits before the backend starts, and is not exposed on the network.
-
-## Develop with Docker and live reload
-
-Use the development Compose file when editing the frontend or backend:
-
-```text
-docker compose -f compose.dev.yaml up --build
-```
-
-Open `http://127.0.0.1:5173`. Changes under `apps/frontend/src` refresh the UI through Vite. Changes under `apps/backend/src` restart the API through the TypeScript watcher. The Vite proxy preserves the browser Host and Origin headers while forwarding `/api` to the internal backend. The encrypted vault and generated output still use the host directories configured in `.env`.
-
-The development and production files intentionally use the same Compose service name. Starting one mode recreates the existing container instead of running two application servers against the same vault.
-
-Switch back to the production build with:
-
-```text
-docker compose up --build
-```
-
-Rebuild the development image when `package.json`, the lockfile, or Docker configuration changes. Normal source edits under `src` do not require a rebuild.
-
-## Run directly
-
-Install Node.js 24.21.0 LTS with NVM and pnpm 10.11. No C/C++ compiler, SQLCipher installation, or system font installation is required.
-
-```text
-nvm install
-nvm use
-cp .env.example .env
 pnpm install
-pnpm build
-pnpm start
-```
-
-For development, run `pnpm dev` to start both workspace packages, or run `pnpm --filter @family-emergency-binder/backend dev` and `pnpm --filter @family-emergency-binder/frontend dev` independently. The frontend runs on port 5173 and proxies `/api` to the backend on port 4173.
-
-## Frontend architecture
-
-The Vite frontend uses React Router data routes, TanStack Query, React Hook Form, Zod, Tailwind CSS, and locally owned Shadcn UI components. Routes are split into public and protected layouts, and feature code lives under `apps/frontend/src/features`. The primary application URLs are `/login`, `/register`, `/recover`, `/documents`, `/templates`, `/generated-files`, and `/settings`; revision history and PDF generation use route-backed overlays under `/documents/:documentId`.
-
-Each template category under `definitions/templates/<templateId>` contains one JSON file per version, such as `v1.0.0.json` and `v1.1.0.json`. The filename is used only to discover files in natural order; the JSON `templateId` and `version` remain authoritative. Its `fields` map defines validation, form metadata, PDF formatting, and fictional `example` values once; its `layout` orders titles, sections, and field IDs for both the form and PDF. A4 page settings and bundled Noto Sans fonts are used by default. Optional local font overrides can live in the category folder.
-
-On startup, the server validates and compiles these source templates into the runtime schema/form/PDF representation. It renders the example PDF and caches a 1200×900 PNG thumbnail in `runtime-data/template-cache` (or `TEMPLATE_CACHE_DIR`). The cache manifest protects a published `templateId@version` from changing without a version bump. Run `pnpm templates:prepare` to validate and prepare templates manually; examples must always be fictional because they are used in previews and API responses.
-
-The smallest useful source template looks like this:
-
-```json
-{
-  "templateId": "emergency-contact",
-  "version": "1.0.0",
-  "name": "Emergency contact",
-  "description": "A short emergency contact record.",
-  "fields": {
-    "contactName": { "label": "Contact name", "type": "string", "required": true, "example": "Sample Contact" },
-    "phone": { "label": "Phone", "type": "string", "input": "phone", "example": "+91 90000 00000" }
-  },
-  "layout": [
-    { "type": "title", "text": "EMERGENCY CONTACT" },
-    { "type": "section", "title": "Contact", "fields": ["contactName", "phone"] }
-  ]
-}
-```
-
-Saved documents remain pinned to the template version selected at creation time.
-
-Recovery keys exist only in in-memory session state. Locking a profile clears the CSRF token and sensitive query data before returning to the login screen. The only browser preference persisted by the frontend is the selected light or dark theme.
-
-Useful frontend checks are:
-
-```text
-pnpm lint
-pnpm test:client
-pnpm test:e2e
-pnpm build
-```
-
-## Pen-drive workflow
-
-The simplest workflow is to keep the working vault in `vault-data` and copy only `family-emergency-binder.febcvault` to or from the pen drive. If the application works directly from a pen drive, configure a dedicated subdirectory on that drive as `VAULT_DIR`; do not use the drive root.
-
-Before copying or ejecting the drive:
-
-1. Use **Lock profile** in the application.
-2. Stop the application or container.
-3. Confirm that the application is stopped. If a forced stop left a non-empty `family-emergency-binder.febcvault-journal`, start the application once so SQLite can recover it, then stop normally before copying.
-4. Copy the vault file and eject the drive normally.
-
-Never run two application instances against the same vault. Native SQLite and OS locks prevent concurrent access and are released automatically after a normal shutdown, crash, Docker `SIGKILL`, or power loss. There is no application `.lock` file to remove. Do not copy, rename, or alter the vault or its SQLite journal while the application is running.
-
-Filesystems such as FAT/exFAT do not enforce Unix file permissions. The vault's authenticated encryption is therefore the primary protection. A strong, unique profile password remains essential.
-
-## Repository safety
-
-Run these checks before the first push and in CI:
-
-```text
-pnpm security:repo-check
-pnpm typecheck
+pnpm dev
 pnpm test
 pnpm build
 ```
 
-The safety check rejects tracked vaults, SQLite files, generated PDFs, `.env` files, recovery-key files, and private-key formats. The supplied DOCX is a blank visual reference and remains unchanged.
+`pnpm build` emits exactly:
+
+```text
+dist/family-emergency-binder.html
+```
+
+The build inlines the React application, styles, browser worker, templates, thumbnails, Noto Sans fonts, and PDF engine. Source templates remain under `definitions/templates/<templateId>/<version>.json`; published versions are immutable and examples must be obviously fictional.
+
+The root `package.json` is the application-version source of truth. The build output under `dist/` is generated and gitignored; do not commit it. A packaged `.zip` distribution containing the HTML and template assets is planned; the stable `family-emergency-binder.html` filename is preserved for it.
+
+Before release, run:
+
+```text
+pnpm security:repo-check
+pnpm typecheck
+pnpm lint
+pnpm test
+pnpm build
+pnpm test:e2e
+```
 
 ## Security boundary
 
-Encryption protects a locked vault file or copied pen drive. It cannot protect values from malware, browser extensions, screenshots, swap, or a privileged host user while a profile is unlocked. The server makes no telemetry calls and templates cannot load remote assets or execute JavaScript.
+Encryption protects a closed vault file or a copied/removable drive. It cannot protect an unlocked vault from the operating system, malware, browser extensions, screenshots, swap, a privileged user, or a modified copy of the application HTML. Treat both the browser and the HTML file as trusted. The application contains no telemetry or remote assets and its production Content Security Policy disables network connections.
+
+There is no migration from the earlier SQLite `.febcvault` proof-of-concept format.

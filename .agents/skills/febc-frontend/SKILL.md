@@ -5,7 +5,7 @@ description: Implement or review Family Emergency Binder Creator React UI, routi
 
 # FEBC frontend work
 
-Use this skill for changes under `apps/frontend` or browser-facing workflows.
+Use this skill for changes under `src`, root frontend configuration, or browser-facing workflows.
 
 1. Read [references/frontend-map.md](references/frontend-map.md) before scanning broadly.
 2. Trace the affected route, feature, query, and shared component from that map.

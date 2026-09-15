@@ -23,9 +23,12 @@ test-results/
 # Private vault data, temporary files, and generated documents
 vault-data/
 runtime-data/
+runtime-data-nobody-empty/
 output/
 *.febcvault
 *.febcvault.*
+*.febvault
+*.febvault.*
 *.vault
 *.vault.*
 *.sqlite

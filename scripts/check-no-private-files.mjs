@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 
 const forbidden = [
   /(^|\/)(?:vault-data|runtime-data|output)\//i,
-  /\.febcvault(?:\.|$)/i,
+  /\.(?:febcvault|febvault)(?:\.|$)/i,
   /\.(?:vault|db|sqlite)(?:[-.]|$)/i,
   /(^|\/)\.env(?:\.|$)/i,
   /recovery-key.*\.txt$/i,

@@ -2,27 +2,28 @@
 
 ## Boundary and assets
 
-- The supported deployment is a single-user application bound to localhost. The OS and browser are trusted while a profile is unlocked.
-- Sensitive assets are profile fields, document labels and revisions, receipt details, audit subjects, recovery keys, passwords, profile data keys, generated PDFs, and their private metadata.
-- The single SQLite database exposes structural metadata by design: profile names, random IDs, template IDs and versions, revision and archive state, event types, and system timestamps. Every user-entered profile or template record is stored as an AES-256-GCM encrypted JSON blob; there are no template-field columns.
-- The app does not protect unlocked values from malware, browser extensions, screenshots, swap, or a privileged host user.
+- The supported deployment is one trusted, self-contained HTML file opened in a current desktop browser by a single user. Chromium provides direct-save mode; Firefox and Safari use an explicit encrypted-download compatibility mode because they lack equivalent user-visible writable handles.
+- The application HTML, browser, extensions, operating system, and privileged host users are trusted while a vault is unlocked.
+- Sensitive assets are vault/profile passwords, recovery keys, the vault data key, profile identities, document labels and revisions, pinned template snapshots, and generated PDFs.
+- A `.febvault` exposes only its magic/version, random vault ID, save generation, bounded KDF parameters, nonces, and ciphertext lengths. All user-entered and organizational data is inside one authenticated ciphertext.
+- The app does not protect unlocked values from malware, browser extensions, screenshots, swap, a modified HTML artifact, or a privileged host user.
 
 ## Controls
 
-- Passwords are stretched with scrypt and used to unwrap a random profile data key. Recovery keys independently derive a wrapping key with HKDF-SHA-256.
-- AES-GCM AAD binds key wraps and encrypted JSON records to the application namespace and format, profile, entity type, entity ID, and revision where applicable. A fresh random nonce is used for every encrypted write.
-- Recovery keys exist only in server response and frontend memory. Locking clears the cookie, CSRF token, recovery key, and sensitive query data; server sessions expire after inactivity.
-- Mutating routes require the in-memory session and matching CSRF header. Host and Origin checks restrict browser traffic to the active localhost origin; responses receive restrictive security headers.
-- Unlock and sensitive operations are rate-limited; repeated password failures persist a temporary profile lockout.
-- The portable vault uses one process-lifetime native SQLite connection with exclusive SQLite/OS locking, full synchronization, a truncate journal, foreign keys, secure deletion, serialized transactions, startup integrity checks, and restrictive best-effort permissions. SQLite locks are released by the OS after normal shutdown, crashes, or forced termination; no sentinel lock file is used.
-- Docker Compose uses a network-disabled, one-shot storage initializer with narrowly scoped filesystem capabilities to normalize the dedicated vault, output, and template-cache mounts before starting the unprivileged, capability-free backend.
-- Template assets must stay local and within allowed roots. Generated PDFs require password confirmation, use exclusive output creation, and record a SHA-256 receipt. Per the product's filename requirement, output filenames may expose sanitized lowercase template, profile, and document-label names, but never document field values.
+- PBKDF2-HMAC-SHA-256 with a random 128-bit salt and at least 600,000 iterations derives a password wrapping key. A random 256-bit recovery secret derives an independent wrapping key with HKDF-SHA-256.
+- A random 256-bit vault data key is wrapped independently by password and recovery keys. AES-256-GCM encrypts the complete payload; AAD binds format, vault ID, purpose, KDF parameters, and save generation. Every encryption uses a fresh random 96-bit nonce.
+- The password is discarded after derivation. The unlocked worker retains a non-extractable `CryptoKey`; temporary raw keys are overwritten on a best-effort basis. JavaScript cannot guarantee removal of every runtime copy.
+- File input, KDF parameters, decoded payloads, schemas, and sizes are bounded and validated before use. Wrong-password and authenticated-data failures do not disclose separate oracles.
+- Every explicit domain mutation is serialized and encrypted. Direct-save mode checks the last file hash and completes the writable-handle write before reporting success. Compatibility mode marks the vault dirty, blocks locking, warns on close, and requires the user to download the newest encrypted generation. Concurrent editing remains unsupported.
+- Locking clears the worker key/state, selected handle, recovery key, active profile, and sensitive UI/query caches. Inactivity locks after 30 minutes.
+- The production artifact has no API calls or remote assets. Its meta Content Security Policy disables networking, permits only hash-pinned application scripts and embedded data/blob resources, and allows inline CSS because browser UI libraries require runtime positioning styles.
+- PDFs require a separate confirmed password and are saved directly to a user-selected file. The app keeps no PDF bytes, password, path, or receipt.
 
 ## Review checklist
 
-- Check whether new data is plaintext in the outer store, logs, errors, URLs, browser persistence, filenames, previews, cache files, or tests.
-- Check authentication and authorization on every new route, including CSRF for mutations and session cleanup on failure.
-- Check path normalization, traversal, symlinks, overwrite behavior, file modes, temporary cleanup, and concurrent writers.
-- Check cryptographic nonce generation, label/AAD stability, key zeroing, error oracles, KDF bounds, tamper failure, and recovery behavior.
-- Check template inputs for executable or remote content and PDFs for accidental unencrypted values or misleading protection claims.
-- Run `pnpm security:repo-check`, production dependency audit, typecheck, lint, tests, and build before release.
+- Check for plaintext in the outer envelope, logs, errors, URLs, browser persistence, filenames, previews, fixtures, and tests.
+- Check KDF floors/ceilings, random nonces and salts, stable AAD, authenticated failure behavior, key lifetime, recovery/password rewraps, and tamper rejection.
+- Check picker user activation, external-change detection, serialized saves, failure reporting, removable-drive behavior, save-copy semantics, and clean lock handling.
+- Check templates for remote/executable content and PDFs for accidental unencrypted values or reuse of the vault password.
+- Verify the production build emits exactly `dist/family-emergency-binder.html` with no external resource or network dependency.
+- Run `pnpm security:repo-check`, dependency review, typecheck, lint, tests, build, and end-to-end checks before release.

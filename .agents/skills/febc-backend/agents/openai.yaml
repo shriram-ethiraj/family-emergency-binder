@@ -1,6 +1,0 @@
-interface:
-  display_name: "FEBC Backend"
-  short_description: "Build and review the vault backend"
-  default_prompt: "Use $febc-backend to implement this backend change."
-policy:
-  allow_implicit_invocation: true
