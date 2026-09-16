@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "package": "pnpm build && node scripts/package-release.mjs",
     "start": "vite preview",
     "security:repo-check": "node scripts/check-no-private-files.mjs",
     "migrate:vault": "node scripts/migrate-legacy-vault.mjs",

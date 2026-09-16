@@ -2,6 +2,7 @@ import { CheckCircle2, HardDrive, LockKeyhole, ShieldCheck } from "lucide-react"
 import { Outlet } from "react-router";
 import { Brand } from "@/components/shared/brand";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { SetupChecklist } from "@/components/shared/setup-checklist";
 import { APP_TAGLINE, APP_VERSION } from "@/lib/branding";
 
 export function PublicLayout() {
@@ -21,13 +22,14 @@ export function PublicLayout() {
             <li className="flex items-center gap-3"><ShieldCheck className="size-4 text-primary" />Protected PDFs</li>
           </ul>
         </div>
-        <p className="text-xs text-muted-foreground">Private by design · No telemetry · Runs from one local file · v{APP_VERSION}</p>
+        <p className="text-xs text-muted-foreground">Private by design · No telemetry · Runs from a local folder · v{APP_VERSION}</p>
       </section>
       <section className="flex min-h-svh items-center justify-center px-5 py-16 sm:px-8">
         <div className="w-full max-w-md">
           <div className="mb-10 lg:hidden"><Brand /></div>
+          <SetupChecklist />
           <Outlet />
-          <p className="mt-8 text-center text-xs text-muted-foreground lg:hidden">Runs from one local file · v{APP_VERSION}</p>
+          <p className="mt-8 text-center text-xs text-muted-foreground lg:hidden">Runs from a local folder · v{APP_VERSION}</p>
         </div>
       </section>
     </main>

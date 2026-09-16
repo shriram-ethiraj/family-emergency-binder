@@ -17,7 +17,6 @@
     "stocksValue": { "label": "Approximate stock value (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 875000 },
     "mutualFundsValue": { "label": "Approximate mutual-fund value (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 625000 },
     "cashOrOtherValue": { "label": "Approximate cash / other value (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 25000 },
-    "valueAsOfDate": { "label": "Values as of", "type": "string", "required": true, "format": "date", "input": "date", "formatter": "date", "example": "2026-09-01" },
 
     "registeredMobile": { "label": "Registered mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 90000 00000" },
     "registeredEmail": { "label": "Registered email", "type": "string", "format": "email", "maxLength": 160, "input": "email", "example": "holder@example.invalid" },
@@ -36,7 +35,7 @@
     { "type": "title", "text": "DEMAT & INVESTMENT ACCOUNT RECORD" },
     { "type": "subtitle", "text": "Account-level totals only; individual securities and credentials are intentionally not recorded" },
     { "type": "section", "title": "ACCOUNT DETAILS", "fields": ["accountHolderName", "brokerOrDp", "depository", "dematAccountId", "holdingMode"] },
-    { "type": "section", "title": "APPROXIMATE VALUES", "fields": ["stocksValue", "mutualFundsValue", "cashOrOtherValue", "valueAsOfDate"] },
+    { "type": "section", "title": "APPROXIMATE VALUES", "fields": ["stocksValue", "mutualFundsValue", "cashOrOtherValue"] },
     { "type": "section", "title": "REGISTERED CONTACT", "fields": ["registeredMobile", "registeredEmail"] },
     { "type": "section", "title": "NOMINATION", "fields": ["nomineeStatus", "nomineeName", "nomineeRelationship", "nomineeMobile"] },
     { "type": "section", "title": "RECOVERY CONTACT & DOCUMENTS", "fields": ["dpSupportPhone", "dpSupportEmail", "documentLocation", "importantNotes"] }

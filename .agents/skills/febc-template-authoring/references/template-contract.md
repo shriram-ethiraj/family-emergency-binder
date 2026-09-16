@@ -5,7 +5,7 @@
 - Templates live at `definitions/templates/<templateId>/<version-file>.json`.
 - The category folder must equal `templateId`; IDs use lowercase kebab-case and `version` must be valid semantic versioning.
 - The JSON `templateId` and `version` are authoritative. The filename only controls discovery order.
-- The browser artifact embeds bundled Noto Sans files under `definitions/assets/fonts`; templates cannot load runtime assets.
+- The release copies templates to `templates/` and packages Noto Sans separately as fixed application assets. Templates cannot load runtime assets.
 
 ## Fields and layout
 
@@ -17,6 +17,6 @@
 
 ## Publishing behavior
 
-- Saved documents remain pinned to the template version chosen at creation.
-- The browser build embeds source templates, fictional thumbnails, fonts, and the PDF renderer. Documents store an encrypted compiled snapshot and content hash for their pinned version.
-- Published `templateId@version` content is immutable. Create a new version for content changes.
+- At the start of each page session, the user selects the release's `templates/` folder. The app scans JSON recursively, accepts direct or nested files, and keeps compiled templates only in memory.
+- Duplicate `templateId@version` files resolve to the valid file with the newest modification time, with relative path as a deterministic tie-breaker. Reusing a version can therefore change matching documents; create a new version for stable historical output.
+- Documents store an encrypted compiled snapshot and content hash. The snapshot is used when the selected catalog no longer contains that ID/version.

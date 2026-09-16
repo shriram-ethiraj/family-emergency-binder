@@ -3,7 +3,7 @@
 ## Product and repository
 
 - This is a private, local-first application for creating and managing printable family emergency binders.
-- The supported security boundary is a single-user browser-only deployment from one trusted HTML file. Do not imply that the app protects an unlocked session from the host OS, malware, browser extensions, screenshots, a modified HTML file, or a privileged user.
+- The supported security boundary is a single-user browser-only deployment from one trusted extracted application folder. Its HTML and fixed `assets` are trusted; session-selected template JSON is validated as untrusted data. Do not imply that the app protects an unlocked session from the host OS, malware, browser extensions, screenshots, modified application assets, or a privileged user.
 - `src` owns the React application, browser worker, encrypted vault persistence, and PDF output; root configuration owns the Vite build. `definitions/templates` is the source of truth for binder templates.
 - Use pnpm 10.11 with Node.js 24.21 or later. Do not substitute npm or yarn.
 

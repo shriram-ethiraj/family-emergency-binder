@@ -1,0 +1,38 @@
+name: Release portable bundle
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Check tag matches package version
+        run: |
+          version=$(node -p "require('./package.json').version")
+          test "${GITHUB_REF_NAME}" = "v${version}"
+      - run: pnpm security:repo-check
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm package
+      - run: pnpm exec playwright install --with-deps
+      - run: pnpm test:e2e
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" dist/family-emergency-binder-v*.zip dist/family-emergency-binder-v*.zip.sha256 --generate-notes --verify-tag

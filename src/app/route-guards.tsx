@@ -1,11 +1,18 @@
 import { Navigate, Outlet, useLocation } from "react-router";
 import { FullScreenLoading } from "@/components/shared/loading";
 import { useSession } from "@/app/session-context";
+import { useTemplateCatalog } from "@/app/template-context";
 
 export function RootRedirect() {
   const { session, loading, vault } = useSession();
+  const { ready } = useTemplateCatalog();
   if (loading) return <FullScreenLoading />;
-  return <Navigate to={session ? "/documents" : vault.unlocked ? "/profiles" : "/login"} replace />;
+  return <Navigate to={!ready ? "/setup/templates" : session ? "/documents" : vault.unlocked ? "/profiles" : "/login"} replace />;
+}
+
+export function TemplateRequiredRoute() {
+  const { ready } = useTemplateCatalog();
+  return ready ? <Outlet /> : <Navigate to="/setup/templates" replace />;
 }
 
 export function PublicOnlyRoute() {

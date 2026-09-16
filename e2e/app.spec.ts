@@ -2,6 +2,14 @@ import { expect, test } from "@playwright/test";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
+const httpArtifact = "/family-emergency-binder.html";
+
+async function loadTemplates(page: import("@playwright/test").Page, artifact = httpArtifact) {
+  await page.goto(`${artifact}#/setup/templates`);
+  await page.getByLabel("Template directory").setInputFiles(resolve("definitions/templates"));
+  await expect(page.getByRole("heading", { name: "Open your family vault" })).toBeVisible();
+}
+
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
     const vaultName = "playwright-family.febvault";
@@ -18,7 +26,8 @@ test.beforeEach(async ({ page }) => {
 test("creates, encrypts, locks, and reopens a portable vault", async ({ page, browserName }) => {
   test.skip(browserName !== "chromium", "Writable-handle mode is a Chromium workflow");
   const password = "fictional test vault password";
-  await page.goto("/family-emergency-binder.html#/register");
+  await loadTemplates(page);
+  await page.getByRole("link", { name: "Create one" }).click();
   await expect(page).toHaveTitle("Family Emergency Binder Creator");
   await page.getByLabel("Vault password", { exact: true }).fill(password);
   await page.getByLabel("Confirm password").fill(password);
@@ -46,17 +55,24 @@ test("creates, encrypts, locks, and reopens a portable vault", async ({ page, br
   await page.getByRole("button", { name: "Unlock vault" }).click();
   await page.getByRole("button", { name: "Fictional E2E Family" }).click();
   await expect(page.getByRole("heading", { name: "No documents yet" })).toBeVisible();
+  await page.getByRole("link", { name: "Print templates" }).click();
+  const preview = page.waitForEvent("popup");
+  await page.getByRole("button", { name: "Preview" }).first().click();
+  const previewPage = await preview;
+  await expect(page.getByText("Preview opened in a new tab")).toBeVisible();
+  await previewPage.close();
 });
 
-test("opens the self-contained artifact directly from file://", async ({ page }) => {
+test("opens the portable artifact directly from file://", async ({ page }) => {
   const browserErrors: string[] = [];
   page.on("console", (message) => { if (message.type() === "error") browserErrors.push(message.text()); });
   page.on("pageerror", (error) => browserErrors.push(error.message));
-  const artifact = pathToFileURL(resolve("dist/family-emergency-binder.html"));
-  artifact.hash = "/register";
-  await page.goto(artifact.href);
+  const artifact = pathToFileURL(resolve("dist/family-emergency-binder/family-emergency-binder.html"));
+  await loadTemplates(page, artifact.href);
+  await page.getByRole("link", { name: "Create one" }).click();
   await expect(page).toHaveTitle("Family Emergency Binder Creator");
   await expect(page.getByRole("heading", { name: "Create an encrypted vault" })).toBeVisible();
+  expect(await page.evaluate(() => Boolean((window as typeof window & { pdfMake?: unknown; __FEBC_PDF_FONTS__?: unknown }).pdfMake && (window as typeof window & { __FEBC_PDF_FONTS__?: unknown }).__FEBC_PDF_FONTS__))).toBe(true);
   await expect.poll(() => page.evaluate(() => window.isSecureContext)).toBe(true);
   await page.waitForTimeout(250);
   expect(browserErrors.filter((message) => /content security policy|cross-origin redirects.*worker|worker script/i.test(message))).toEqual([]);
@@ -68,9 +84,9 @@ test("creates and downloads a vault in compatibility mode", async ({ page }) => 
     Object.defineProperty(window, "showSaveFilePicker", { configurable: true, value: undefined });
     Object.defineProperty(window, "FileSystemFileHandle", { configurable: true, value: undefined });
   });
-  const artifact = pathToFileURL(resolve("dist/family-emergency-binder.html"));
-  artifact.hash = "/register";
-  await page.goto(artifact.href);
+  const artifact = pathToFileURL(resolve("dist/family-emergency-binder/family-emergency-binder.html"));
+  await loadTemplates(page, artifact.href);
+  await page.getByRole("link", { name: "Create one" }).click();
   await expect(page.getByRole("alert").filter({ hasText: "Compatibility mode" })).toBeVisible();
   await page.getByLabel("Vault password", { exact: true }).fill("fictional compatibility password");
   await page.getByLabel("Confirm password").fill("fictional compatibility password");

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router";
 import { SessionProvider } from "@/app/session-context";
+import { TemplateProvider } from "@/app/template-context";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/branding";
 
 export function RootLayout() {
@@ -8,5 +9,5 @@ export function RootLayout() {
     document.title = APP_NAME;
     document.querySelector('meta[name="description"]')?.setAttribute("content", APP_DESCRIPTION);
   }, []);
-  return <SessionProvider><Outlet /></SessionProvider>;
+  return <TemplateProvider><SessionProvider><Outlet /></SessionProvider></TemplateProvider>;
 }
