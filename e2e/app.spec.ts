@@ -55,12 +55,48 @@ test("creates, encrypts, locks, and reopens a portable vault", async ({ page, br
   await page.getByRole("button", { name: "Unlock vault" }).click();
   await page.getByRole("button", { name: "Fictional E2E Family" }).click();
   await expect(page.getByRole("heading", { name: "No documents yet" })).toBeVisible();
-  await page.getByRole("link", { name: "Print templates" }).click();
+  await page.getByRole("link", { name: "Create document", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Choose a template" })).toBeVisible();
   const preview = page.waitForEvent("popup");
   await page.getByRole("button", { name: "Preview" }).first().click();
   const previewPage = await preview;
   await expect(page.getByText("Preview opened in a new tab")).toBeVisible();
   await previewPage.close();
+});
+
+test("persists newly added credit-card networks", async ({ page, browserName }) => {
+  test.skip(browserName !== "chromium", "Writable-handle mode is a Chromium workflow");
+  const password = "fictional card network password";
+  await loadTemplates(page);
+  await page.getByRole("link", { name: "Create one" }).click();
+  await page.getByLabel("Vault password", { exact: true }).fill(password);
+  await page.getByLabel("Confirm password").fill(password);
+  await page.getByRole("button", { name: "Choose location and create vault" }).click();
+  await page.getByLabel("I copied this recovery key and stored it safely.").check();
+  await page.getByRole("button", { name: "Continue to profiles" }).click();
+  await page.getByLabel("Full name").fill("Fictional Card Family");
+  await page.getByRole("button", { name: "Create profile" }).click();
+
+  await page.getByRole("link", { name: "Create document" }).click();
+  await page.getByRole("heading", { name: "Credit cards" }).locator("..").getByRole("link", { name: "Use template" }).click();
+  await page.getByLabel("Document label").fill("Fictional cards");
+  await page.getByLabel("Issuing bank / provider").first().fill("Example Bank");
+  await page.getByLabel("Credit-card number").first().fill("SAMPLE-CARD-0001");
+  await page.getByLabel("Valid through (MM/YY)").first().fill("03/29");
+  await page.getByLabel("Card network").first().click();
+  await page.getByRole("option", { name: "JCB" }).click();
+  await expect(page.getByLabel("Card network").first()).toContainText("JCB");
+  await page.getByRole("button", { name: "Create document" }).click();
+
+  await page.getByRole("link", { name: "Fictional cards" }).click();
+  await expect(page.getByLabel("Issuing bank / provider").first()).toHaveValue("Example Bank");
+  await expect(page.getByLabel("Card network").first()).toContainText("JCB");
+  await page.getByLabel("Card network").first().click();
+  await page.getByRole("option", { name: "Maestro" }).click();
+  await page.getByRole("button", { name: "Save new revision" }).click();
+
+  await page.getByRole("link", { name: "Fictional cards" }).click();
+  await expect(page.getByLabel("Card network").first()).toContainText("Maestro");
 });
 
 test("opens the portable artifact directly from file://", async ({ page }) => {

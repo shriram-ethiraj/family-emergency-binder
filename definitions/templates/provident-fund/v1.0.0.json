@@ -15,7 +15,6 @@
     "pfAdministrator": { "label": "PF administrator", "type": "string", "required": true, "enum": ["EPFO", "Exempted PF trust", "Other / not verified"], "input": "enum", "example": "EPFO" },
 
     "epfBalance": { "label": "Approximate EPF balance (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 920000 },
-    "valueAsOfDate": { "label": "Balance as of", "type": "string", "required": true, "format": "date", "input": "date", "formatter": "date", "example": "2026-09-01" },
     "epsStatus": { "label": "EPS pension coverage", "type": "string", "enum": ["Covered", "Not covered", "Not verified"], "input": "enum", "example": "Covered" },
     "edliStatus": { "label": "EDLI insurance coverage", "type": "string", "enum": ["Covered", "Not covered", "Not verified"], "input": "enum", "example": "Covered" },
 
@@ -37,7 +36,7 @@
     { "type": "title", "text": "PROVIDENT FUND RECORD" },
     { "type": "subtitle", "text": "For EPF, pension, insurance, and future claim reference" },
     { "type": "section", "title": "MEMBER & ACCOUNT", "fields": ["memberName", "uan", "currentMemberId", "currentEmployer", "pfAdministrator"] },
-    { "type": "section", "title": "BALANCE & COVERAGE", "fields": ["epfBalance", "valueAsOfDate", "epsStatus", "edliStatus"] },
+    { "type": "section", "title": "BALANCE & COVERAGE", "fields": ["epfBalance", "epsStatus", "edliStatus"] },
     { "type": "section", "title": "REGISTERED CONTACT", "fields": ["registeredMobile", "registeredEmail"] },
     { "type": "section", "title": "E-NOMINATION", "fields": ["nomineeStatus", "nomineeName", "nomineeRelationship", "nomineeMobile"] },
     { "type": "section", "title": "CLAIM CONTACT & DOCUMENTS", "fields": ["officeOrTrustName", "supportPhone", "supportEmail", "documentLocation", "importantNotes"] }

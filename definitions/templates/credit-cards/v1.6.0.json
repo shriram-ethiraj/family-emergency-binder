@@ -55,5 +55,5 @@
     { "type": "section", "title": "CREDIT CARD 7", "fields": ["issuingBank7", "cardNumber7", "validThrough7", "cardNetwork7"] },
     { "type": "text", "text": "Important: Once the current dues on all cards listed above are fully paid, please contact each respective bank and close the card immediately.", "style": "note" }
   ],
-  "footer": "Last generated: {{system.generatedAt}}   |   Document revision {{system.documentRevision}}"
+  "footer": "Last generated: {{system.generatedAt}}"
 }

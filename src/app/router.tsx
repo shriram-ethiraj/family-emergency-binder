@@ -16,7 +16,6 @@ import { Component as RecordsWorkspace } from "@/features/records/records-worksp
 import { Component as RecordEditorPage } from "@/features/records/record-editor-page";
 import { Component as RevisionsRoute } from "@/features/records/revisions-route";
 import { Component as GenerateRoute } from "@/features/records/generate-route";
-import { Component as TemplatesPage } from "@/features/templates/templates-page";
 import { Component as SettingsPage } from "@/features/settings/settings-page";
 
 export const appRoutes = [
@@ -63,7 +62,6 @@ export const appRoutes = [
                 },
                 { path: "documents/new", element: <RecordEditorPage /> },
                 { path: "documents/:documentId/edit", element: <RecordEditorPage /> },
-                { path: "templates", element: <TemplatesPage /> },
                 { path: "settings", element: <SettingsPage /> },
               ],
             }],

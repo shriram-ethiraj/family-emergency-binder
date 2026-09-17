@@ -1,0 +1,46 @@
+{
+  "templateId": "lic-policy",
+  "version": "1.0.0",
+  "name": "LIC policy",
+  "description": "A one-page Life Insurance Corporation (LIC) policy summary with premium, maturity, death-benefit, nominee, and agent details.",
+  "page": {
+    "size": "A4",
+    "marginsMm": [10, 8, 10, 8]
+  },
+  "fields": {
+    "policyholderName": { "label": "Policyholder name", "type": "string", "required": true, "minLength": 1, "maxLength": 120, "example": "Sample Policy Holder" },
+    "lifeAssuredName": { "label": "Life assured name (if different)", "type": "string", "maxLength": 120, "example": "Sample Family Member" },
+    "planName": { "label": "LIC policy or plan name", "type": "string", "required": true, "minLength": 1, "maxLength": 160, "example": "Example Jeevan Plan 000" },
+    "policyNumber": { "label": "Policy number", "type": "string", "required": true, "minLength": 1, "maxLength": 100, "example": "SAMPLE-000000000" },
+    "policyStartDate": { "label": "Date of commencement", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2020-04-01" },
+    "policyTerm": { "label": "Policy term", "type": "string", "maxLength": 80, "example": "20 years" },
+    "premiumPayingTerm": { "label": "Premium paying term", "type": "string", "maxLength": 80, "example": "15 years" },
+    "maturityDate": { "label": "Date of maturity", "type": "string", "format": "date", "input": "date", "formatter": "date", "example": "2040-04-01" },
+    "sumAssured": { "label": "Basic sum assured (INR)", "type": "number", "required": true, "minimum": 0, "input": "money", "formatter": "money", "example": 500000 },
+    "deathBenefit": { "label": "Death benefit / sum on death (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 5000000 },
+    "maturityValue": { "label": "Approximate maturity value (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 950000 },
+    "premiumAmount": { "label": "Premium amount (INR)", "type": "number", "minimum": 0, "input": "money", "formatter": "money", "example": 24500 },
+    "premiumFrequency": { "label": "Premium frequency", "type": "string", "enum": ["Monthly", "Quarterly", "Half-yearly", "Annual", "Single"], "input": "enum", "example": "Annual" },
+    "riders": { "label": "Riders or additional benefits", "type": "string", "maxLength": 1000, "input": "multiline", "formatter": "multiline", "example": "Accidental death and disability benefit rider" },
+    "nomineeName": { "label": "Nominee name", "type": "string", "maxLength": 120, "example": "Sample Nominee" },
+    "nomineeRelationship": { "label": "Relationship", "type": "string", "maxLength": 80, "example": "Spouse" },
+    "nomineeMobile": { "label": "Nominee mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 91111 11111" },
+    "servicingBranch": { "label": "Servicing branch", "type": "string", "maxLength": 160, "example": "Example Branch, Sample City" },
+    "agentName": { "label": "Agent or advisor name", "type": "string", "maxLength": 120, "example": "Sample Agent" },
+    "agentMobile": { "label": "Agent or advisor mobile", "type": "string", "maxLength": 40, "input": "phone", "example": "+91 92222 22222" },
+    "policyDocumentLocation": { "label": "Policy document location", "type": "string", "maxLength": 300, "input": "multiline", "example": "Printed: family binder, Insurance section\nDigital: encrypted drive, LIC folder" },
+    "importantNotes": { "label": "Important notes", "type": "string", "maxLength": 2000, "input": "multiline", "formatter": "multiline", "example": "Quote the policy number for all LIC correspondence. Premiums may be payable online through the LIC portal or at the branch." }
+  },
+  "layout": [
+    { "type": "title", "text": "LIC POLICY RECORD" },
+    { "type": "subtitle", "text": "For family reference and future claim assistance" },
+    { "type": "section", "title": "POLICY HOLDER", "fields": ["policyholderName", "lifeAssuredName"] },
+    { "type": "section", "title": "POLICY DETAILS", "fields": ["planName", "policyNumber", "policyStartDate", "policyTerm", "premiumPayingTerm", "maturityDate"] },
+    { "type": "section", "title": "PREMIUM DETAILS", "fields": ["premiumAmount", "premiumFrequency"] },
+    { "type": "section", "title": "BENEFITS", "fields": ["sumAssured", "deathBenefit", "maturityValue", "riders"] },
+    { "type": "section", "title": "NOMINEE DETAILS", "fields": ["nomineeName", "nomineeRelationship", "nomineeMobile"] },
+    { "type": "section", "title": "LIC OFFICE & AGENT", "fields": ["servicingBranch", "agentName", "agentMobile"] },
+    { "type": "section", "title": "DOCUMENTS & NOTES", "fields": ["policyDocumentLocation", "importantNotes"] }
+  ],
+  "footer": "Last generated: {{system.generatedAt}}"
+}

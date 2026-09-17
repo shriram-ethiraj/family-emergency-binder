@@ -1,4 +1,4 @@
-import { CircleAlert, CircleCheck, FileText, Files, LoaderCircle, LockKeyhole, Save, Settings, Users } from "lucide-react";
+import { CircleAlert, CircleCheck, Files, LoaderCircle, LockKeyhole, Save, Settings, Users } from "lucide-react";
 import { NavLink, Outlet, useLocation } from "react-router";
 import { useSession } from "@/app/session-context";
 import { Brand } from "@/components/shared/brand";
@@ -27,14 +27,12 @@ import { toast } from "sonner";
 
 const navigation = [
   { to: "/documents", label: "Documents", icon: Files },
-  { to: "/templates", label: "Print templates", icon: FileText },
   { to: "/settings", label: "Profile settings", icon: Settings },
 ];
 
 function titleFor(pathname: string) {
   if (pathname === "/documents/new") return "Create document";
   if (/^\/documents\/[^/]+\/edit$/.test(pathname)) return "Edit document";
-  if (pathname.startsWith("/templates")) return "Print templates";
   if (pathname.startsWith("/settings")) return "Profile settings";
   return "Documents";
 }
