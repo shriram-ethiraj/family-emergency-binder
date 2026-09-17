@@ -3,6 +3,7 @@
 A portable, local-first application for creating, updating, and printing the documents a family may need during an emergency.
 
 [![Build and tests](https://github.com/shriram-ethiraj/family-emergency-binder/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/shriram-ethiraj/family-emergency-binder/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/github/package-json/v/shriram-ethiraj/family-emergency-binder?style=flat-square&label=version&color=blue)](https://github.com/shriram-ethiraj/family-emergency-binder/releases/latest)
 [![Total release downloads](https://img.shields.io/github/downloads/shriram-ethiraj/family-emergency-binder/total?style=flat-square&label=downloads&color=brightgreen&logo=github&logoColor=white)](https://github.com/shriram-ethiraj/family-emergency-binder/releases)
 
 Family Emergency Binder Creator gives you one dedicated place to maintain structured family records and regenerate consistent, password-protected PDFs whenever information changes. It runs from an extracted folder in a current desktop browser. There is no installer, server, account, cloud service, or internet connection required.
@@ -21,6 +22,16 @@ Download the release ZIP and its matching SHA-256 checksum, then extract the ZIP
 - Generates password-protected PDFs for saving and printing.
 - Supports custom JSON templates created manually or with help from an AI tool.
 - Runs locally with networking disabled in the production package.
+
+## Screenshots
+
+Every session starts the same way: load the `templates` folder, then open or create an encrypted `.febvault`. After unlocking, one workspace holds every document for the selected profile.
+
+![Choosing the templates folder in light mode](docs/images/setup-templates.png)
+
+![Opening an encrypted .febvault](docs/images/open-vault.png)
+
+![Documents workspace listing active documents](docs/images/documents.png)
 
 ## Use the application
 
