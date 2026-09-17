@@ -30,6 +30,18 @@ describe("runtime template catalog", () => {
     expect(result.diagnostics).toEqual([]);
   });
 
+  it("keeps the custom-template guide example compatible with the runtime contract", async () => {
+    const markdown = readFileSync(resolve("docs/custom-templates.md"), "utf8");
+    const match = markdown.match(/## Complete minimal example[\s\S]*?```json\n([\s\S]*?)\n```/);
+    expect(match, "custom-template guide must contain a JSON example").not.toBeNull();
+    const example = match![1];
+    const result = await loadTemplateFiles([templateFile("templates/emergency-contact-card.json", example)]);
+
+    expect(result.diagnostics).toEqual([]);
+    expect(result.templates).toHaveLength(1);
+    expect(result.templates[0]).toMatchObject({ templateId: "emergency-contact-card", version: "1.0.0" });
+  });
+
   it("loads nested JSON templates and reports invalid neighbors", async () => {
     const result = await loadTemplateFiles([
       templateFile("templates/fictional-contact/v1.0.0.json", source("Fictional contacts")),
