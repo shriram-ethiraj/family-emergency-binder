@@ -1,65 +1,119 @@
 # Family Emergency Binder Creator
 
-A private, browser-only application for creating encrypted family emergency binder records and password-protected PDFs. The distributable is a portable folder; recipients do not need Docker, Node.js, a server, an installation, or an internet connection.
+A portable, local-first application for creating, updating, and printing the documents a family may need during an emergency.
+
+[![Build and tests](https://github.com/shriram-ethiraj/family-emergency-binder/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/shriram-ethiraj/family-emergency-binder/actions/workflows/ci.yml)
+[![Total release downloads](https://img.shields.io/github/downloads/shriram-ethiraj/family-emergency-binder/total?style=flat-square&label=downloads&color=brightgreen&logo=github&logoColor=white)](https://github.com/shriram-ethiraj/family-emergency-binder/releases)
+
+Family Emergency Binder Creator gives you one dedicated place to maintain structured family records and regenerate consistent, password-protected PDFs whenever information changes. It runs from an extracted folder in a current desktop browser. There is no installer, server, account, cloud service, or internet connection required.
+
+## Download
+
+**[Download the latest release](https://github.com/shriram-ethiraj/family-emergency-binder/releases/latest)**
+
+Download the release ZIP and its matching SHA-256 checksum, then extract the ZIP. Keep the extracted folder together: the HTML file depends on the adjacent `assets/` and `templates/` directories.
+
+## What it does
+
+- Uses reusable templates to provide consistent forms for accounts, insurance policies, contacts, and other emergency records.
+- Stores profiles, documents, revisions, and template snapshots in one encrypted `.febvault` file.
+- Makes ongoing maintenance easier: update the structured record, then generate a fresh PDF instead of editing several independent office documents.
+- Generates password-protected PDFs for saving and printing.
+- Supports custom JSON templates created manually or with help from an AI tool.
+- Runs locally with networking disabled in the production package.
 
 ## Use the application
 
-1. Build with `pnpm install && pnpm build`, or extract a release ZIP without moving files out of its root folder.
-2. Open `family-emergency-binder.html` in a current desktop browser.
-3. Choose the adjacent `templates` folder. The app validates its JSON files and keeps them in memory for this page session only.
-4. Open a `.febvault`, or create and save a new one, then enter the vault password.
-5. Choose or create a profile after both setup steps are complete.
-6. Wait for the persistent status to say **Saved** before locking, closing the browser, copying the vault, or ejecting a removable drive.
+1. Extract the release ZIP without moving files out of the extracted folder.
+2. Open `family-emergency-binder.html` in a current Chrome, Edge, or compatible Chromium browser.
+3. When prompted, choose the extracted `templates` directory. Templates are validated and held in memory for this browser session.
+4. Select an existing `.febvault`, or create a new vault and save it somewhere you can back up safely.
+5. Enter the vault password, then choose or create a family profile.
+6. Create a document from a template and enter the information you want to maintain.
+7. Open the document's generation view, choose a separate PDF password, and save the generated PDF.
+8. Print the PDF or store it according to your family's emergency plan.
+9. Wait for the application to show **Saved** before closing the browser, copying the vault, or ejecting removable storage.
 
-Refreshing or closing the page clears both the selected template files and the unlocked vault. Choose the template folder and vault again on the next page session. To add a template, place its JSON file directly or in a subfolder under `templates/`, then reopen the app and select that folder. The app never modifies template files.
+Refreshing or closing the page clears the selected template directory and the unlocked vault from the browser session. Select them again the next time you open the app.
 
-Chrome, Edge, and compatible Chromium browsers update the selected vault in place. Firefox and Safari use compatibility mode: they open a vault through a standard file chooser and download a new encrypted copy after each set of changes. Always keep the newest download.
+### Vaults, recovery, and backups
 
-## Vaults and backups
+A vault password protects every profile in a `.febvault`. When you create a vault, the application also shows a recovery key once. Store that key separately from both the password and every copy of the vault; it is the only supported way to regain access if the password is forgotten.
 
-A `.febvault` is a portable, encrypted JSON envelope. One password unlocks every profile in that file. Profile names, document labels, field values, immutable revisions, and fallback template snapshots are encrypted together with AES-256-GCM. PBKDF2-HMAC-SHA-256 with at least 600,000 iterations derives the password wrapping key. A separately stored 256-bit recovery key can replace a forgotten password.
+Keep more than one current backup of the vault. Do not edit the same vault concurrently in multiple browser windows or on multiple computers.
 
-Generated PDFs are saved directly through a browser Save dialog and use a separately confirmed PDF password. The app keeps no generated-PDF history or PDF bytes in the vault.
+Chrome, Edge, and compatible Chromium browsers can update the selected vault in place. Firefox and Safari use compatibility mode: they open a vault through a file chooser and download a new encrypted copy after changes. In compatibility mode, always use **Download updated vault** when shown and retain the newest download.
 
-## Development and packaging
+## Custom templates
+
+Place additional JSON template files directly in, or in subdirectories under, the release's `templates/` directory. Close and reopen the app, then select that directory again. The app reads template files but never modifies them.
+
+See **[Creating custom templates](docs/custom-templates.md)** for the complete format, a working example, validation rules, testing instructions, and a prompt you can give to an AI assistant.
+
+## FAQ
+
+### Why use this instead of Word or LibreOffice templates?
+
+Word and LibreOffice are excellent general-purpose editors, but a folder of separate documents can become difficult to update consistently over time. Family Emergency Binder Creator provides a dedicated environment with structured forms, reusable templates, an encrypted local vault, immutable document revisions, and repeatable PDF generation. You update the maintained record and generate a new printable copy instead of manually synchronizing several office files.
+
+### Can I keep the app on an encrypted pen drive?
+
+Yes. You can keep the complete extracted application folder, its templates, and the encrypted `.febvault` together on encrypted removable storage. You can then open the app on another trusted computer that has a current supported desktop browser.
+
+The vault remains encrypted by the application, while drive encryption adds another layer around the files on the device. Always wait for **Saved**, close the browser, and eject the drive safely. An encrypted drive does not make an untrusted computer safe: the operating system, browser, extensions, and other software can access information while the vault is unlocked.
+
+### Does it require installation or internet access?
+
+No. End users only need the extracted release folder and a current desktop browser. The production application does not need Node.js, a web server, an account, or an internet connection.
+
+### Where is my family information stored?
+
+Your profiles, document values, labels, revisions, and fallback template snapshots are stored inside the selected encrypted `.febvault`. They are not sent to an application server or cloud account. Template files define form structure and fictional examples; they should never contain your real family information.
+
+### How does it make ongoing maintenance easier?
+
+The app keeps structured records and their revisions in one vault. When a phone number, account, policy, or contact changes, edit the relevant record and regenerate its PDF. You do not have to find and synchronize the same value across several independently edited documents.
+
+### Can I create my own document types?
+
+Yes. Add a JSON template under `templates/` and select that directory when the app starts. The [custom-template guide](docs/custom-templates.md) explains the format and includes a constrained AI prompt for generating a starting template.
+
+### What happens if I forget the vault password?
+
+Use the recovery key that was displayed when the vault was created. The recovery key lets you replace a forgotten password. If both the password and recovery key are lost, the encrypted vault cannot be recovered.
+
+### Which browser should I use?
+
+Use a current Chrome, Edge, or compatible Chromium browser for the simplest experience and direct in-place vault saving. Firefox and Safari are supported through compatibility mode, which downloads a new encrypted vault copy after changes.
+
+### Does encryption protect an open vault from everything?
+
+No. Encryption protects a closed vault file at rest. It cannot protect information in an unlocked session from the operating system, malware, browser extensions, screenshots, swap, a privileged user, or modified application files. Use the app only on a computer and browser you trust.
+
+## Development
 
 Development requires Node.js 24.21 or later and pnpm 10.11. End users do not need either.
 
 ```text
 pnpm install
 pnpm dev
-pnpm test
-pnpm build
-pnpm package
-```
-
-`pnpm build` emits:
-
-```text
-dist/family-emergency-binder/
-├── family-emergency-binder.html
-├── assets/
-├── templates/
-└── README.txt
-```
-
-The HTML contains the React application, styles, and browser worker. Fixed PDFMake, Noto Sans, and Geist resources live under `assets/`; source templates are copied from `definitions/templates` to `templates`. `pnpm package` also creates a versioned ZIP and SHA-256 checksum while enforcing the 1.25 MiB HTML and 2.5 MiB ZIP budgets.
-
-Template IDs use lowercase kebab-case and versions use semantic versioning. If multiple valid files declare the same ID/version, the newest filesystem modification time wins, with relative path as the tie-breaker. Reuse of a version can affect matching documents, so prefer a new version for meaningful edits. Repository examples must remain obviously fictional.
-
-Before release, run:
-
-```text
-pnpm security:repo-check
 pnpm typecheck
 pnpm lint
 pnpm test
-pnpm build
 pnpm test:e2e
+pnpm package
 ```
 
-Pushing a `v*` tag matching `package.json` runs release verification and publishes the ZIP plus checksum to GitHub Releases.
+`pnpm build` emits the portable folder under `dist/family-emergency-binder/`. `pnpm package` also creates a versioned ZIP and SHA-256 checksum while enforcing the HTML and archive size budgets.
 
-## Security boundary
+Pushing a `vMAJOR.MINOR.PATCH` tag that matches `package.json` and points to a commit on `main` runs the complete release checks and creates a draft GitHub Release. Verify the draft assets before publishing it.
 
-Encryption protects a closed vault file or copied/removable drive. It cannot protect an unlocked vault from the operating system, malware, browser extensions, screenshots, swap, a privileged user, or modified application assets. Treat the extracted HTML and fixed `assets/` directory as trusted. Selected template JSON is treated as untrusted, bounded data and cannot execute code or load remote assets. The production Content Security Policy disables networking.
+## Security
+
+The supported boundary is a single-user deployment opened from one trusted extracted application folder. Selected template JSON is treated as untrusted, bounded data, but the application HTML, fixed assets, browser, extensions, operating system, and privileged host users are trusted while a vault is unlocked.
+
+Read [SECURITY.md](SECURITY.md) before reporting a security problem. Never attach a real vault, recovery key, password, generated PDF, or personal record value to a public issue.
+
+## License
+
+[MIT](LICENSE)

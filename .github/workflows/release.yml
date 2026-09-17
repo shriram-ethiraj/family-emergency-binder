@@ -3,36 +3,71 @@ name: Release portable bundle
 on:
   push:
     tags:
-      - "v*"
+      - "v*.*.*"
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CI: "true"
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          version: 10.11.0
-      - uses: actions/setup-node@v4
+          fetch-depth: 0
+      - name: Enable pnpm
+        run: corepack enable
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24.21.0
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Check tag matches package version
+      - name: Verify release tag and commit
+        shell: bash
         run: |
+          if [[ ! "${GITHUB_REF_NAME}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Release tag must use the form vMAJOR.MINOR.PATCH" >&2
+            exit 1
+          fi
           version=$(node -p "require('./package.json').version")
           test "${GITHUB_REF_NAME}" = "v${version}"
+          git fetch --no-tags origin main
+          git merge-base --is-ancestor "${GITHUB_SHA}" origin/main
+      - run: pnpm install --frozen-lockfile
       - run: pnpm security:repo-check
+      - run: pnpm audit --prod
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm package
       - run: pnpm exec playwright install --with-deps
       - run: pnpm test:e2e
-      - name: Publish release
+      - name: Create or update draft release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "${GITHUB_REF_NAME}" dist/family-emergency-binder-v*.zip dist/family-emergency-binder-v*.zip.sha256 --generate-notes --verify-tag
+        shell: bash
+        run: |
+          archive="dist/family-emergency-binder-${GITHUB_REF_NAME}.zip"
+          checksum="${archive}.sha256"
+          release_state=$(gh release view "${GITHUB_REF_NAME}" --json isDraft --jq .isDraft 2>/dev/null || true)
+
+          if [[ -z "${release_state}" ]]; then
+            gh release create "${GITHUB_REF_NAME}" "${archive}" "${checksum}" \
+              --draft \
+              --generate-notes \
+              --verify-tag \
+              --title "Family Emergency Binder Creator ${GITHUB_REF_NAME#v}"
+          elif [[ "${release_state}" = "true" ]]; then
+            gh release upload "${GITHUB_REF_NAME}" "${archive}" "${checksum}" --clobber
+          else
+            echo "Release ${GITHUB_REF_NAME} is already published; refusing to replace its assets." >&2
+            exit 1
+          fi

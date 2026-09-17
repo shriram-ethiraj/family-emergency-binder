@@ -16,6 +16,7 @@
 - Templates may not load remote assets or execute code. Keep generated output and template assets local.
 - Treat persisted vault formats, cryptographic labels, session handling, filesystem writes, and PDF protection as security-sensitive changes.
 - Preserve unrelated user changes. Ask before adding production dependencies.
+- Name branches with conventional purpose prefixes such as `feat/`, `fix/`, `docs/`, `refactor/`, `test/`, or `chore/`. Do not use tool- or agent-branded branch prefixes.
 
 ## Verification
 
