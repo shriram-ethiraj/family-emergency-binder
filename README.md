@@ -27,11 +27,17 @@ Download the release ZIP and its matching SHA-256 checksum, then extract the ZIP
 
 Every session starts the same way: load the `templates` folder, then open or create an encrypted `.febvault`. After unlocking, one workspace holds every document for the selected profile.
 
-![Choosing the templates folder in light mode](docs/images/setup-templates.png)
+![Setup progress with the templates folder loaded and the vault unlocked](docs/images/getting-started.png)
 
-![Opening an encrypted .febvault](docs/images/open-vault.png)
+*Load the `templates` folder and unlock your encrypted `.febvault`, then create or choose a profile.*
 
-![Documents workspace listing active documents](docs/images/documents.png)
+![Documents workspace listing active documents with Generate PDF actions](docs/images/documents.png)
+
+*Every profile keeps its documents, revisions, and PDF actions together in one workspace.*
+
+![Generated bank account PDF with fictional sample entries](docs/images/sample-pdf.png)
+
+*Each document generates a consistent, printable, password-protected PDF. The sample above uses plainly fictional bank details.*
 
 ## Use the application
 
